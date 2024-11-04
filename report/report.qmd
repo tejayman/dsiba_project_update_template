@@ -53,6 +53,7 @@ source(here::here("src", "setup.R"))
 
 - Rendering only `report.qmd` will render also all the other files.
 
+
 :::
 
 {{< include sections/_introduction.qmd >}}
