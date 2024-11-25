@@ -1,0 +1,4 @@
+"0","ggplot(dataset, aes(x = age)) +"
+"0","  geom_histogram(bins = 20, fill = ""skyblue"", color = ""black"", alpha = 0.7) +"
+"0","  labs(title = ""Age Distribution"", x = ""Age"", y = ""Count"")+"
+"0","  theme_minimal()"

@@ -1,0 +1,6 @@
+"0","ggplot(dataset, aes(x = ch2o)) +"
+"0","  geom_histogram(aes(y = ..density..), bins = 30, fill = ""skyblue"", color = ""black"", alpha = 0.6) +"
+"0","  geom_density(color = ""darkblue"", size = 1) +"
+"0","  ggtitle(""Histogram and Density of Comsumption of Water"") +"
+"0","  theme_minimal() +"
+"0","  labs(x = ""CH2O"", y = ""Density"")"

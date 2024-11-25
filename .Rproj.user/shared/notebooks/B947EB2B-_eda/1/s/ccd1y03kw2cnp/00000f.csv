@@ -1,0 +1,5 @@
+"0","ggplot(dataset, aes(x = obesity_lev, y = use_tech, fill = obesity_lev)) +"
+"0","  geom_boxplot() +"
+"0","  labs(title = ""Boxplot of Use of Technology by Obesity Level"", x = ""Obesity Level"", y = ""Use of Technology"") +"
+"0","  theme_minimal() +"
+"0","  theme(legend.position = ""none"")"

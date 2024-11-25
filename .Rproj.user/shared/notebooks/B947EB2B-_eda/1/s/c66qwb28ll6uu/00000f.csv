@@ -1,0 +1,7 @@
+"0","ggplot(dataset, aes(x = weight, y = obesity_lev, fill = obesity_lev)) +"
+"0","  geom_density_ridges(scale = 0.9, alpha = 0.6) +"
+"0","  labs(title = ""Ridgeline Plot of Weight by Obesity Level"", x = ""Weight"", y = ""Obesity Level"") +"
+"0","  theme_minimal() +"
+"0","  theme(legend.position = ""none"")"
+"2","Picking joint bandwidth of 2.63
+"

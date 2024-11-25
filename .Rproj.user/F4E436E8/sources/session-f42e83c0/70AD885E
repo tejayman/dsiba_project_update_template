@@ -1,0 +1,26 @@
+{
+    "id": "70AD885E",
+    "path": "~/Desktop/projet datascience/dsiba_project_update_template/report/sections/_introduction.qmd",
+    "project_path": "report/sections/_introduction.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1732536883931.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "1,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1732537036,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1732537036482,
+    "read_only": false,
+    "read_only_alternatives": []
+}

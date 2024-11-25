@@ -1,0 +1,4 @@
+"0","ggplot(dataset, aes(x = obesity_lev)) +"
+"0","  geom_bar(fill = ""blue"", color = ""black"") +"
+"0","  theme_minimal() +"
+"0","  ggtitle(""Class Distribution of Obesity Levels"")"

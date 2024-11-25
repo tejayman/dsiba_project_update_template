@@ -1,0 +1,4 @@
+"0","ggplot(dataset, aes(x = use_tech, fill = obesity_lev)) +"
+"0","  geom_density(alpha = 0.5) +"
+"0","  labs(title = ""Density of Use of Technology by Obesity Level"", x = ""Use of Technology"", y = ""Density"") +"
+"0","  theme_minimal()"

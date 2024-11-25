@@ -1,0 +1,7 @@
+"0","ggplot(dataset, aes(x = height, y = weight)) +"
+"0","  geom_point(alpha = 0.7, aes(color = obesity_lev)) +"
+"0","  facet_wrap(~ obesity_lev) +"
+"0","  ggtitle(""Facet Grid of Weight and Height by Obesity Level"") +"
+"0","  theme_minimal() +"
+"0","  labs(x = ""Height"", y = ""Weight"", color = ""Obesity Level"") +"
+"0","  theme(legend.position = ""none"")"

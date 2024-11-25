@@ -1,0 +1,7 @@
+"0","dataset$vegetable_food <- round(dataset$vegetable_food)"
+"0","ggplot(dataset, aes(x = factor(vegetable_food, levels = c(1, 2, 3), "
+"0","                               labels = c(""Rarely"", ""Sometimes"", ""Often"")))) +"
+"0","  geom_bar(fill = ""skyblue"", color = ""black"") +"
+"0","  labs(title = ""Vegetable Consumption Frequency"", x = ""Frequency of Vegetable Consumption"", y = ""Count"") +"
+"0","  theme_minimal() +"
+"0","  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))"

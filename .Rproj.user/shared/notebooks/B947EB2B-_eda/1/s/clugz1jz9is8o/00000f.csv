@@ -1,0 +1,5 @@
+"0","ggplot(dataset, aes(x = height, fill = gender)) +"
+"0","  geom_density(alpha = 0.5) +"
+"0","  labs(title = ""Density Plot of Height by Gender"", x = ""Height"", y = ""Density"") +"
+"0","  scale_fill_manual(values = c(""pink"", ""lightblue""), name = ""Gender"", labels = c(""Female"", ""Male"")) +"
+"0","  theme_minimal()"

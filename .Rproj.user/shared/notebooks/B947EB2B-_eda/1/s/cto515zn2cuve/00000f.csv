@@ -1,0 +1,6 @@
+"0","ggplot(dataset, aes(x = ch2o, fill = gender)) +"
+"0","  geom_histogram(bins = 20, alpha = 0.6, position = ""dodge"") +"
+"0","  facet_wrap(~ obesity_lev) +"
+"0","  ggtitle(""Histogram of CH2O by Obesity Level and Gender"") +"
+"0","  theme_minimal() +"
+"0","  labs(x = ""CH2O"", y = ""Count"", fill = ""Gender"")"

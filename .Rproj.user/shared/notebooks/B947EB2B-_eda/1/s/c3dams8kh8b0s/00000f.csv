@@ -1,0 +1,18 @@
+"0","data_summary <- dataset %>%"
+"0","  group_by(obesity_lev, calorie_check) %>%"
+"0","  summarise(count = n(), .groups = ""drop"") %>%"
+"0","  mutate(total = sum(count), proportion = count / total)"
+"0",""
+"0","ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check, color = calorie_check)) +"
+"0","  geom_line(size = 1.2) +"
+"0","  geom_point(size = 3) +"
+"0","  scale_y_continuous(labels = scales::percent) +"
+"0","  scale_color_manual(values = c(""no"" = ""lightcoral"", ""yes"" = ""lightblue"")) +"
+"0","  labs(title = ""Proportion of Calorie Checking by Obesity Level"", x = ""Obesity Level"", y = ""Proportion"", color = ""Calorie Check"") +"
+"0","  theme_minimal()"
+"2","Warning:"
+"2"," [38;5;232mUsing `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+[36mℹ[38;5;232m Please use `linewidth` instead.
+[90mThis warning is displayed once every 8 hours.[38;5;232m
+[90mCall `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.[38;5;232m[39m
+"
