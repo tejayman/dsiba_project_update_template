@@ -222,7 +222,7 @@ dataset_num <- dataset_num %>%
 
 str(dataset_num)
 
-dataset_num
+head(dataset_num)
 ```
 
 #### 2.4 Correlations
