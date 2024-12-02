@@ -1,3 +1,0 @@
-"0","library(here)"
-"0","dataset <- read.csv(here(""data/raw/dataset.csv""))"
-"0","View(dataset)"

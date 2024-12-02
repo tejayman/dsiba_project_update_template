@@ -1,6 +1,0 @@
-"0","ggplot(dataset, aes(x = factor(round(nb_meal_day), levels = c(1, 2, 3, 4, 5), "
-"0","                               labels = c(""1 Meal"", ""2 Meals"", ""3 Meals"", ""4 Meals"", ""5+ Meals"")))) + "
-"0","  geom_bar(fill = ""orange"", color = ""black"") + "
-"0","  labs(title = ""Number of Meals per Day"", x = ""Meals per Day"", y = ""Count"") + "
-"0","  theme_minimal() + "
-"0","  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5))"

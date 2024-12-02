@@ -1,7 +1,0 @@
-"0","ggplot(dataset, aes(x = age, y = use_tech)) +"
-"0","  geom_point(alpha = 0.4, color = ""blue"") +"
-"0","  geom_smooth(method = ""lm"", color = ""red"", linetype = ""dashed"") +"
-"0","  labs(title = ""Scatter Plot of Use of Technology vs Age"", x = ""Age"", y = ""Use of Technology"") +"
-"0","  theme_minimal()"
-"1","[38;5;232m`geom_smooth()` using formula = 'y ~ x'[39m
-"

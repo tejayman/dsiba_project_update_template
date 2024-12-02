@@ -1,7 +1,0 @@
-"0","ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  # Replace 'obesity_lev' with any category variable"
-"0","  geom_violin(trim = FALSE) +"
-"0","  geom_boxplot(width = 0.1, color = ""black"", fill = ""white"") +"
-"0","  ggtitle(""Violin Plot of Physical Activity by Obesity Level"") +"
-"0","  theme_minimal() +"
-"0","  labs(x = ""Obesity Level"", y = ""Physical Activity"") +"
-"0","  theme(legend.position = ""none"")"

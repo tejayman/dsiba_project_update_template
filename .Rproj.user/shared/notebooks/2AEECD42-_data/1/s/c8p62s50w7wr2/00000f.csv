@@ -1,4 +1,0 @@
-"0","ggplot(dataset, aes(x = age, fill = obesity_lev)) +"
-"0","  geom_density(alpha = 0.5) +"
-"0","  theme_minimal() +"
-"0","  ggtitle(""Age Distribution by Obesity Levels"")"
