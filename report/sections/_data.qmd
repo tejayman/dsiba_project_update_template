@@ -17,13 +17,22 @@ Import dataset.
 
 ```{r}
 library(here)
-dataset <- read.csv(here("data/raw/dataset.csv"))
-head(dataset)
+dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
+head(dataset_raw)
 ```
 
-Upload packages.
+Load required libraries for data manipulation, visualization, and clustering.
+Each package serves a specific purpose:
 
-```{r, warning=FALSE}
+- dplyr: For data manipulation (e.g., filtering, summarizing).
+- tidyr: For data tidying (e.g., reshaping).
+- ggplot2: For visualization.
+- corrplot: For correlation matrix visualization.
+- ggridges: For creating ridge plots.
+- cluster: For clustering algorithms.
+- reshape2: For data reshaping, especially during visualization.
+
+```{r, message=FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -35,66 +44,74 @@ library(reshape2)
 
 #### 2.1 Preprocessing analyses and checks
 
-Rename variables for clarity.
+We rename columns for clarity and ease of use in the analysis.
+The new names are shorter and more intuitive while preserving their original meaning.
 
 ```{r}
-  dataset <- dataset %>%
-  rename(family_hist = family_history_with_overweight,
-         obesity_lev = NObeyesdad,
-         caloric_food = FAVC,
-         vegetable_food = FCVC,
-         nb_meal_day = NCP,
-         food_btw_meals = CAEC,
-         ch2o = CH2O,
-         smoke = SMOKE,
-         calorie_check = SCC,
-         physical_act = FAF,
-         freq_alcohol = CALC,
-         use_tech = TUE,
-         m_trans = MTRANS,
-         gender = Gender,
-         age = Age,
-         weight = Weight,
-         height = Height)
+  dataset <- dataset_raw %>%
+  rename(
+    family_hist = family_history_with_overweight,
+    obesity_lev = NObeyesdad,
+    caloric_food = FAVC,
+    vegetable_food = FCVC,
+    nb_meal_day = NCP,
+    food_btw_meals = CAEC,
+    ch2o = CH2O,
+    smoke = SMOKE,
+    calorie_check = SCC,
+    physical_act = FAF,
+    freq_alcohol = CALC,
+    use_tech = TUE,
+    m_trans = MTRANS,
+    gender = Gender,
+    age = Age,
+    weight = Weight,
+    height = Height
+  )
 ```
 
-Control for missing values.
+Check for missing values in the dataset, missing values are identified by counting NA values for each column.
 
 ```{r}
 missing_values <- colSums(is.na(dataset))
 missing_values
 ```
 
-All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using \> dataset_cleaned \<- na.omit(dataset) or imputing missing values, for instance, by replacing missing "Age" values with the mean age (dataset\$Age\[is.na(dataset\$Age)\] \<- mean(dataset\$Age, na.rm = TRUE)).
+Missing values are identified by counting NA values for each column.
+All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using dataset <- na.omit(dataset_row) or imputing missing values with appropriate measures (e.g. mean or median).
 
-Converting categorical variables to factors now enables R to correctly interpret them as discrete categories, which is essential for accurate analysis and modeling.
+Check the structure of the dataset to identify data types for each variable.
+This helps in identifying columns that need to be converted or standardized.
 
 ```{r}
 str(dataset)
+```
 
-#Convert Gender to factor with levels 0 for Female and 1 for Male
-dataset$gender <- as.factor(dataset$gender)
+We convert specific columns to factors for categorical interpretation during analysis.
+Factors ensure proper handling of discrete variables in statistical modeling.
 
-#Convert family_hist, caloric_food, smoke, calorie_check to factor with levels 0 for No and 1 for Yes
-dataset$family_hist <- as.factor(dataset$family_hist)
-dataset$caloric_food <- as.factor(dataset$caloric_food)
-dataset$smoke <- as.factor(dataset$smoke)
-dataset$calorie_check <- as.factor(dataset$calorie_check)
+We arranged the levels of the obesity categories, food consumption between meals, and the frequency of alcohol use to follow a logical ordinal progression, ensuring these variables accurately reflect increasing severity or frequency for improved interpretability and analysis.
 
-#Convert other categorical variables to factors as before
-dataset$m_trans <- as.factor(dataset$m_trans)
-
-#Convert "obesity_lev", "food_btw_meals" and "freq_alcohol" to an ordinal factor with the correct levels
-dataset$obesity_lev <- factor(dataset$obesity_lev, levels = c("Insufficient_Weight", "Normal_Weight", "Overweight_Level_I", "Overweight_Level_II", "Obesity_Type_I", "Obesity_Type_II", "Obesity_Type_III"), ordered = TRUE)
-
-dataset$food_btw_meals <- factor(dataset$food_btw_meals, levels = c("No", "Sometimes", "Frequently", "Always"),  ordered = TRUE)
-
-#We standardize "no" to "No" to avoid NA instead of no
-dataset$freq_alcohol[dataset$freq_alcohol == "no"] <- "No"
-
-#Now we convert it to an ordinal factor with the correct levels
-dataset$freq_alcohol <- factor(dataset$freq_alcohol, levels = c("No", "Sometimes", "Frequently", "Always"), ordered = TRUE)
-
+```{r}
+dataset <- dataset %>%
+  mutate(
+    gender = as.factor(gender),
+    family_hist = as.factor(family_hist),
+    caloric_food = as.factor(caloric_food),
+    smoke = as.factor(smoke),
+    calorie_check = as.factor(calorie_check),
+    m_trans = as.factor(m_trans),
+    obesity_lev = factor(obesity_lev, 
+                         levels = c("Insufficient_Weight", "Normal_Weight", 
+                                    "Overweight_Level_I", "Overweight_Level_II", 
+                                    "Obesity_Type_I", "Obesity_Type_II", "Obesity_Type_III"), 
+                         ordered = TRUE),
+    food_btw_meals = factor(ifelse(food_btw_meals == "no", "No", food_btw_meals), 
+                            levels = c("No", "Sometimes", "Frequently", "Always"), 
+                            ordered = TRUE),
+    freq_alcohol = factor(ifelse(freq_alcohol == "no", "No", freq_alcohol), 
+                          levels = c("No", "Sometimes", "Frequently", "Always"), 
+                          ordered = TRUE))
 ```
 
 Using str() before and after confirms that each variable has the correct data type, preventing errors during analysis.
@@ -113,55 +130,47 @@ duplicated_rows
 Keep only one instance of each duplicated row.
 
 ```{r}
-dataset_cleaned <- dataset %>% distinct() 
+dataset <- dataset %>%
+  distinct()
 ```
 
 Check the number of rows after removing duplicates.
 
 ```{r}
-nrow(dataset_cleaned)
-```
-
-Verify if there are still any duplicates.
-
-```{r}
-any(duplicated(dataset_cleaned))
-```
-
-Replace the original dataset with the cleaned one.
-
-```{r}
-dataset <- dataset_cleaned
-```
-
-Remove the cleaned dataset variable.
-
-```{r}
-rm(dataset_cleaned)
+nrow(dataset)
+any(duplicated(dataset))
 ```
 
 #### 2.2 In-depth analysis of SMOTE's impact and visualization of class Distribution
 
 ```{r}
 ggplot(dataset, aes(x = obesity_lev)) +
-  geom_bar(fill = "blue", color = "black") +
+  geom_bar(fill = "skyblue", color = "black") +
   theme_minimal() +
-  ggtitle("Class Distribution of Obesity Levels")
-
-table(dataset$obesity_lev)
+  labs(
+    title = "Class Distribution of Obesity Levels",
+    x = "Obesity Level",
+    y = "Count"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) #Adjusted the text for clarity
 ```
 
-After applying SMOTE, the distribution is noticeably more balanced across all categories, with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
+After applying SMOTE, the distribution is noticeably more balanced across all categories,  with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
 
 #### 2.3 Distribution analysis
 
 Density plot for age.
 
-```{r}
+```{r, warning=FALSE}
 ggplot(dataset, aes(x = age, fill = obesity_lev)) +
   geom_density(alpha = 0.5) +
   theme_minimal() +
-  ggtitle("Age Distribution by Obesity Levels")
+    labs(
+    title = "Age Distribution by Obesity Levels",
+    x = "Age",
+    y = "Density",
+    fill = "Obesity Level") +
+  xlim(14, 50) # Limit the x-axis to 0–50
 ```
 
 Some peaks appear sharp and could indicate overfitting or unnatural clustering due to synthetic data (for example, a prominent peak in "Obesity Type I" around the age of 30). The categories appear to be well-separated, which may help the model learn patterns effectively, but it’s essential to ensure these separations are logical and not artifacts introduced by SMOTE.
@@ -199,23 +208,49 @@ Silhouette Score from K-means Clustering: The mean silhouette score of approxima
 Creating a Numerical Dataset "dataset_num".
 
 ```{r}
-#Change of obesity level variable character to numeric
 
-dataset_num <- dataset%>%
-  mutate(obesity_lev = recode(obesity_lev, "Insufficient_Weight"=1, "Normal_Weight" = 2, "Overweight_Level_I" = 3, "Overweight_Level_II" = 4, "Obesity_Type_I" = 5, "Obesity_Type_II" = 6, "Obesity_Type_III" = 7,))
-str(dataset_num$obesity_lev)
+dataset_num <- dataset %>%
+  mutate(obesity_lev = recode(obesity_lev,
+                              "Insufficient_Weight"=1,
+                              "Normal_Weight" = 2,
+                              "Overweight_Level_I" = 3,
+                              "Overweight_Level_II" = 4,
+                              "Obesity_Type_I" = 5,
+                              "Obesity_Type_II" = 6,
+                              "Obesity_Type_III" = 7,
+  ))
+
+dataset_num <- dataset %>%
+  mutate(freq_alcohol = recode(freq_alcohol,
+                               "No"=1,        
+                               "Sometimes"=2, 
+                               "Frequently" =3,
+                               "Always"  =4 
+  ))
+
+dataset_num <- dataset %>%
+  mutate(m_trans = recode(m_trans,
+                          "Automobile"=1,
+                          "Bike"=2,
+                          "Motorbike"=3,
+                          "Public_Transportation"=4,
+                          "Walking"=5,
+  ))
+
+dataset_num <- dataset %>%
+  mutate(food_btw_meals = recode(food_btw_meals,
+                                 "No"=0,
+                                 "Sometimes"=1 ,
+                                 "Frequently"=2,
+                                 "Always"=3
+  )
+  )
 
 dataset_num <- dataset_num%>%
-  mutate(freq_alcohol = recode(freq_alcohol,"no"=1, "Sometimes"=2, "Frequently" =3, "Always"  =4 ))
-
-dataset_num <- dataset_num%>%
-  mutate(m_trans = recode(m_trans, "Automobile"=1, "Bike"=2, "Motorbike"=3, "Public_Transportation"=4, "Walking"=5, ))
-
-dataset_num <- dataset_num%>%
-  mutate(food_btw_meals = recode(food_btw_meals, "no"=0, "Sometimes"=1 , "Frequently"=2, "Always"=3))
-
-dataset_num <- dataset_num%>%
-  mutate(calorie_check = recode(calorie_check, "no"=0, "yes"=1 , ))
+  mutate(calorie_check = recode(calorie_check,
+                                "no"=0,
+                                "yes"=1 ,
+  ))
 
 dataset_num <- dataset_num %>%
   mutate(across(where(is.factor), ~ as.numeric(.)))
@@ -224,17 +259,30 @@ str(dataset_num)
 
 head(dataset_num)
 ```
+We verified the presence of any potential NA values that might have arisen during the conversion of categorical variables to numeric format. 
+
+```{r}
+colSums(is.na(dataset_num))
+```
+
+The results of the test confirmed that there are no NA values in the dataset, indicating that all variables were successfully converted to numeric format while retaining their integrity.
+
 
 #### 2.4 Correlations
 
-Selection of possible factor influencing obesity level.
+In order to select the possible factor influencing obesity level.
+
+We computed a correlation matrix to analyze the relationships between numeric variables, focusing on their associations with obesity_lev. Variables were reordered by the strength of their correlation with obesity_lev for clarity. A heatmap was generated using a diverging color gradient to visualize these correlations, with red indicating strong positive relationships, blue for negative, and white for weak or neutral. Numerical labels and rotated axis labels were added to improve interpretability, highlighting key factors linked to obesity levels.
 
 ```{r}
-#Create the heatmap with correlation values
-
 #Assuming dataset_num is already defined and contains the relevant columns
 cor_matrix <- cor(dataset_num %>%
-                    select("physical_act", "freq_alcohol", "obesity_lev", "age", "weight","height", "family_hist", "caloric_food", "vegetable_food", "food_btw_meals", "use_tech", "ch2o", "m_trans", "smoke","nb_meal_day", "calorie_check", "gender"), use = "complete.obs")
+                    select("physical_act", "freq_alcohol", "obesity_lev", "age",
+                           "weight","height", "family_hist", "caloric_food",
+                           "vegetable_food", "food_btw_meals", "use_tech", "ch2o",
+                           "m_trans", "smoke","nb_meal_day", "calorie_check",
+                           "gender"),
+                  use = "complete.obs")
 
 #Extract the correlations with 'obesity_lev'
 cor_with_obesity_lev <- cor_matrix["obesity_lev",]
@@ -250,7 +298,47 @@ cor_long <- melt(cor_matrix_ordered)
 
 ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
   geom_tile() +
-  geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5, hjust = 0.5) + # Center text within tiles
+  geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5
+            , hjust = 0.5) + # Center text within tiles
+    scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  
+  labs(title = "Correlation Heatmap Ordered by Obesity Level", x = "Variables", y
+       = "Variables") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        # Rotate x-axis labels for readability
+        axis.text.y = element_text(angle = 45, vjust = 1) 
+        # Rotate y-axis labels for readability
+  )
+
+# Create the heatmap with correlation values
+
+# Assuming dataset_num is already defined and contains the relevant columns
+cor_matrix <- cor(dataset_num %>%
+                    select("physical_act", "freq_alcohol", "obesity_lev", "age",
+                           "weight", "family_hist", "caloric_food",
+                           "vegetable_food", "food_btw_meals",
+                           "use_tech","ch2o", "height",
+                           "calorie_check", "gender"),
+                  use = "complete.obs")
+
+# Extract the correlations with 'obesity_lev'
+cor_with_obesity_lev <- cor_matrix["obesity_lev",]
+
+# Order variables by their correlation with 'obesity_lev'
+ordered_vars <- names(sort(cor_with_obesity_lev, decreasing = TRUE))
+
+# Reorder the correlation matrix based on this order
+cor_matrix_ordered <- cor_matrix[ordered_vars, ordered_vars]
+
+# Melt the ordered correlation matrix into long format
+cor_long <- melt(cor_matrix_ordered)
+
+
+ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5
+            , hjust = 0.5) + # Center text within tiles
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
   labs(title = "Correlation Heatmap Ordered by Obesity Level", x = "Variables", y
        = "Variables") +
