@@ -2,7 +2,7 @@
 title:Project Update Report (Group G): Code and Structure
 
 author:
- - Dorofieiev,Illia
+ - Dorofieiev, Illia
  - Pizzi, Alessandro
  - Lovato, Andrea
  - El Abed, Ayman
