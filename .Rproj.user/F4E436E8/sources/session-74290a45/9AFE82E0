@@ -1,0 +1,26 @@
+{
+    "id": "9AFE82E0",
+    "path": "~/Desktop/projet datascience/dsiba_project_update_template/report/sections/_eda.qmd",
+    "project_path": "report/sections/_eda.qmd",
+    "type": "quarto_markdown",
+    "hash": "565052663",
+    "contents": "",
+    "dirty": false,
+    "created": 1732536888790.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "1,2",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1732538591,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1732538591782,
+    "read_only": false,
+    "read_only_alternatives": []
+}

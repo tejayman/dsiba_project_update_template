@@ -1,0 +1,263 @@
+
+### 2. Data
+
+We planned to acquire data from a publicly available dataset.
+
+The dataset used for this project, titled "Estimation of Obesity Levels Based on Eating Habits and Physical Condition," was sourced from the UCI Machine Learning Repository.
+
+This dataset, available in CSV, was originally compiled by researchers at the Universidad de la Costa, Colombia, and includes of both synthetically generated data and user-collected data. The 23% of the data was collected through a web page using a survey accesible online for 30 days, in which 498 individuals provided information regarding their dietary habits, physical activity levels, and demographic data. The remaining 77% of the dataset was generated synthetically using the SMOTE algorithm (Synthetic Minority Over-sampling Technique) in Weka. SMOTE was applied to balance the dataset, addressing issues of class imbalance by generating synthetic examples for minority classes.
+
+At the end, the obtained dataset contains 17 attributes and 2111 records.
+
+There are limitations and challenges associated with using this data. First, the reliance on synthetic data means that the results may not accurately represent real-world scenarios, as it lacks the nuances and variability present in genuine human behaviors. Second, while the user-collected data can provide valuable insights, it may be subject to biases, such as self-reporting inaccuracies and sampling biases, which can impact the reliability of our findings. Additionally, gathering data from diverse geographical regions might pose challenges in reaching a representative sample, and we must ensure that the survey is accessible and engaging to participants to encourage participation.
+
+Below, the steps related to the conducted analyses will be outlined.
+
+Import dataset.
+
+```{r}
+library(here)
+dataset <- read.csv(here("data/raw/dataset.csv"))
+head(dataset)
+```
+
+Upload packages.
+
+```{r, warning=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(ggridges)
+library(cluster)
+library(reshape2)
+```
+
+#### 2.1 Preprocessing analyses and checks
+
+Rename variables for clarity.
+
+```{r}
+  dataset <- dataset %>%
+  rename(family_hist = family_history_with_overweight,
+         obesity_lev = NObeyesdad,
+         caloric_food = FAVC,
+         vegetable_food = FCVC,
+         nb_meal_day = NCP,
+         food_btw_meals = CAEC,
+         ch2o = CH2O,
+         smoke = SMOKE,
+         calorie_check = SCC,
+         physical_act = FAF,
+         freq_alcohol = CALC,
+         use_tech = TUE,
+         m_trans = MTRANS,
+         gender = Gender,
+         age = Age,
+         weight = Weight,
+         height = Height)
+```
+
+Control for missing values.
+
+```{r}
+missing_values <- colSums(is.na(dataset))
+missing_values
+```
+
+All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using \> dataset_cleaned \<- na.omit(dataset) or imputing missing values, for instance, by replacing missing "Age" values with the mean age (dataset\$Age\[is.na(dataset\$Age)\] \<- mean(dataset\$Age, na.rm = TRUE)).
+
+Converting categorical variables to factors now enables R to correctly interpret them as discrete categories, which is essential for accurate analysis and modeling.
+
+```{r}
+str(dataset)
+
+#Convert Gender to factor with levels 0 for Female and 1 for Male
+dataset$gender <- as.factor(dataset$gender)
+
+#Convert family_hist, caloric_food, smoke, calorie_check to factor with levels 0 for No and 1 for Yes
+dataset$family_hist <- as.factor(dataset$family_hist)
+dataset$caloric_food <- as.factor(dataset$caloric_food)
+dataset$smoke <- as.factor(dataset$smoke)
+dataset$calorie_check <- as.factor(dataset$calorie_check)
+
+#Convert other categorical variables to factors as before
+dataset$m_trans <- as.factor(dataset$m_trans)
+
+#Convert "obesity_lev", "food_btw_meals" and "freq_alcohol" to an ordinal factor with the correct levels
+dataset$obesity_lev <- factor(dataset$obesity_lev, levels = c("Insufficient_Weight", "Normal_Weight", "Overweight_Level_I", "Overweight_Level_II", "Obesity_Type_I", "Obesity_Type_II", "Obesity_Type_III"), ordered = TRUE)
+
+dataset$food_btw_meals <- factor(dataset$food_btw_meals, levels = c("No", "Sometimes", "Frequently", "Always"),  ordered = TRUE)
+
+#We standardize "no" to "No" to avoid NA instead of no
+dataset$freq_alcohol[dataset$freq_alcohol == "no"] <- "No"
+
+#Now we convert it to an ordinal factor with the correct levels
+dataset$freq_alcohol <- factor(dataset$freq_alcohol, levels = c("No", "Sometimes", "Frequently", "Always"), ordered = TRUE)
+
+```
+
+Using str() before and after confirms that each variable has the correct data type, preventing errors during analysis.
+
+```{r}
+str(dataset)
+```
+
+Check for duplicated rows in the dataset.
+
+```{r}
+duplicated_rows <- sum(duplicated(dataset))
+duplicated_rows
+```
+
+Keep only one instance of each duplicated row.
+
+```{r}
+dataset_cleaned <- dataset %>% distinct() 
+```
+
+Check the number of rows after removing duplicates.
+
+```{r}
+nrow(dataset_cleaned)
+```
+
+Verify if there are still any duplicates.
+
+```{r}
+any(duplicated(dataset_cleaned))
+```
+
+Replace the original dataset with the cleaned one.
+
+```{r}
+dataset <- dataset_cleaned
+```
+
+Remove the cleaned dataset variable.
+
+```{r}
+rm(dataset_cleaned)
+```
+
+#### 2.2 In-depth analysis of SMOTE's impact and visualization of class Distribution
+
+```{r}
+ggplot(dataset, aes(x = obesity_lev)) +
+  geom_bar(fill = "blue", color = "black") +
+  theme_minimal() +
+  ggtitle("Class Distribution of Obesity Levels")
+
+table(dataset$obesity_lev)
+```
+
+After applying SMOTE, the distribution is noticeably more balanced across all categories, with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
+
+#### 2.3 Distribution analysis
+
+Density plot for age.
+
+```{r}
+ggplot(dataset, aes(x = age, fill = obesity_lev)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+  ggtitle("Age Distribution by Obesity Levels")
+```
+
+Some peaks appear sharp and could indicate overfitting or unnatural clustering due to synthetic data (for example, a prominent peak in "Obesity Type I" around the age of 30). The categories appear to be well-separated, which may help the model learn patterns effectively, but it’s essential to ensure these separations are logical and not artifacts introduced by SMOTE.
+
+Calculate summary statistics by obesity level.
+
+```{r}
+dataset %>%
+  group_by(obesity_lev) %>%
+  summarize(
+    Age_Mean = mean(age, na.rm = TRUE),
+    Age_SD = sd(age, na.rm = TRUE),
+    Height_Mean = mean(height, na.rm = TRUE),
+    Height_SD = sd(height, na.rm = TRUE),
+    Weight_Mean = mean(weight, na.rm = TRUE),
+    Weight_SD = sd(weight, na.rm = TRUE)
+  )
+```
+
+The summary statistics show relatively consistent means and standard deviations for Age, Height, and Weight across obesity levels, which suggests that SMOTE has preserved the overall distribution without introducing extreme values. Interpretation: Since the means and standard deviations are similar across classes, it appears SMOTE didn’t drastically alter the dataset's variability. This consistency supports the idea that SMOTE effectively balanced the classes without distorting key variable distributions.
+
+Perform K-means clustering and calculate silhouette score.
+
+```{r}
+library(cluster)
+set.seed(123)
+kmeans_res <- kmeans(select(dataset, where(is.numeric)), centers = length(unique(dataset$obesity_lev)))
+silhouette_score <- silhouette(kmeans_res$cluster, dist(select(dataset, where(is.numeric))))
+mean_silhouette_score <- mean(silhouette_score[, "sil_width"])
+mean_silhouette_score
+```
+
+Silhouette Score from K-means Clustering: The mean silhouette score of approximately 0.456 suggests a moderate level of cohesion within clusters and some separation between them. This score indicates that the clusters (representing obesity levels) are neither too distinct nor too blended. Interpretation: A score close to 0.5 generally reflects reasonable class separability without excessive artificial separability. This score suggests that SMOTE has helped create distinguishable but not overly isolated clusters, which is desirable for class balance. We conclude that SMOTE has balanced the dataset without drastically distorting it.
+
+Creating a Numerical Dataset "dataset_num".
+
+```{r}
+#Change of obesity level variable character to numeric
+
+dataset_num <- dataset%>%
+  mutate(obesity_lev = recode(obesity_lev, "Insufficient_Weight"=1, "Normal_Weight" = 2, "Overweight_Level_I" = 3, "Overweight_Level_II" = 4, "Obesity_Type_I" = 5, "Obesity_Type_II" = 6, "Obesity_Type_III" = 7,))
+str(dataset_num$obesity_lev)
+
+dataset_num <- dataset_num%>%
+  mutate(freq_alcohol = recode(freq_alcohol,"no"=1, "Sometimes"=2, "Frequently" =3, "Always"  =4 ))
+
+dataset_num <- dataset_num%>%
+  mutate(m_trans = recode(m_trans, "Automobile"=1, "Bike"=2, "Motorbike"=3, "Public_Transportation"=4, "Walking"=5, ))
+
+dataset_num <- dataset_num%>%
+  mutate(food_btw_meals = recode(food_btw_meals, "no"=0, "Sometimes"=1 , "Frequently"=2, "Always"=3))
+
+dataset_num <- dataset_num%>%
+  mutate(calorie_check = recode(calorie_check, "no"=0, "yes"=1 , ))
+
+dataset_num <- dataset_num %>%
+  mutate(across(where(is.factor), ~ as.numeric(.)))
+
+str(dataset_num)
+
+dataset_num
+```
+
+#### 2.4 Correlations
+
+Selection of possible factor influencing obesity level.
+
+```{r}
+#Create the heatmap with correlation values
+
+#Assuming dataset_num is already defined and contains the relevant columns
+cor_matrix <- cor(dataset_num %>%
+                    select("physical_act", "freq_alcohol", "obesity_lev", "age", "weight","height", "family_hist", "caloric_food", "vegetable_food", "food_btw_meals", "use_tech", "ch2o", "m_trans", "smoke","nb_meal_day", "calorie_check", "gender"), use = "complete.obs")
+
+#Extract the correlations with 'obesity_lev'
+cor_with_obesity_lev <- cor_matrix["obesity_lev",]
+
+#Order variables by their correlation with 'obesity_lev'
+ordered_vars <- names(sort(cor_with_obesity_lev, decreasing = TRUE))
+
+#Reorder the correlation matrix based on this order
+cor_matrix_ordered <- cor_matrix[ordered_vars, ordered_vars]
+
+#Melt the ordered correlation matrix into long format
+cor_long <- melt(cor_matrix_ordered)
+
+ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5, hjust = 0.5) + # Center text within tiles
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  labs(title = "Correlation Heatmap Ordered by Obesity Level", x = "Variables", y
+       = "Variables") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        # Rotate x-axis labels for readability
+        axis.text.y = element_text(angle = 45, vjust = 1) 
+        # Rotate y-axis labels for readability
+  )
+```
