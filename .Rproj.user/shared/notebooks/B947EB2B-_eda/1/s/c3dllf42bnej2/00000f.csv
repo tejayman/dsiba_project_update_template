@@ -1,6 +1,0 @@
-"0","ggplot(dataset, aes(x = age, fill = obesity_lev)) +"
-"0","  geom_histogram(bins = 20, color = ""black"", alpha = 0.6) +"
-"0","  facet_wrap(~ obesity_lev) +"
-"0","  ggtitle(""Distribution of Age by Obesity Level"") +"
-"0","  labs(x = ""Age"", y = ""Count"") +"
-"0","  theme_minimal()"

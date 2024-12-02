@@ -1,8 +1,0 @@
-"0","ggplot(dataset, aes(x = height, y = weight, color = obesity_lev)) +"
-"0","  geom_point(alpha = 0.7) +"
-"0","  geom_smooth(method = ""lm"", se = FALSE, aes(group = obesity_lev)) +  # Adds a trend line for each obesity level"
-"0","  ggtitle(""Scatter Plot of Weight vs Height by Obesity Level"") +"
-"0","  theme_minimal() +"
-"0","  labs(x = ""Height"", y = ""Weight"", color = ""Obesity Level"")"
-"1","[38;5;232m`geom_smooth()` using formula = 'y ~ x'[39m
-"

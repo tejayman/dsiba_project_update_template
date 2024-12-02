@@ -1,6 +1,0 @@
-"0","correlation_height_weight <- cor(dataset$height, dataset$weight, use = ""complete.obs"")"
-"0","correlation_height_weight"
-"1","[1]"
-"1"," 0.457468"
-"1","
-"

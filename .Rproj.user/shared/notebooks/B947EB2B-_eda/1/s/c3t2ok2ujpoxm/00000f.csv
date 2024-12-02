@@ -1,5 +1,0 @@
-"0","ggplot(dataset, aes(x = obesity_lev, y = height, fill = obesity_lev)) +"
-"0","  geom_boxplot(alpha = 0.6) +"
-"0","  labs(title = ""Height Distribution by Obesity Level"", x = ""Obesity Level"", y = ""Height"") +"
-"0","  theme_minimal() +"
-"0","  theme(legend.position = ""none"", axis.text.x = element_text(angle = 45, hjust = 1))"

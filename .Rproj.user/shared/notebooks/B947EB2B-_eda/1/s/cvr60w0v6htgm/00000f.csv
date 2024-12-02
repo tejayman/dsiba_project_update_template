@@ -1,8 +1,0 @@
-"0","ggplot(dataset, aes(x = age, y = physical_act)) +  # Replace 'age' with another continuous variable"
-"0","  geom_point(alpha = 0.6) +"
-"0","  geom_smooth(method = ""lm"", color = ""blue"", se = FALSE) +"
-"0","  ggtitle(""Scatter Plot of Physical Activity vs Age"") +"
-"0","  theme_minimal() +"
-"0","  labs(x = ""Age"", y = ""Physical Activity"")"
-"1","[38;5;232m`geom_smooth()` using formula = 'y ~ x'[39m
-"

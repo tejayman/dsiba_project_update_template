@@ -1,6 +1,0 @@
-"0","correlation_meals_weight <- cor(dataset$nb_meal_day, dataset$weight, use = ""complete.obs"")"
-"0","correlation_meals_weight"
-"1","[1]"
-"1"," 0.09214947"
-"1","
-"

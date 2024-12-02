@@ -1,6 +1,0 @@
-"0","ggplot(dataset, aes(x = gender, y = ch2o, fill = gender)) +"
-"0","  geom_violin(trim = FALSE, alpha = 0.7) +"
-"0","  ggtitle(""Violin Plot of CH2O by Gender"") +"
-"0","  theme_minimal() +"
-"0","  labs(x = ""Gender"", y = ""CH2O"") +"
-"0","  theme(legend.position = ""none"")"

@@ -5,7 +5,7 @@
 
 ##### Age
 
-Descriptive statistic for Age.
+Descriptive statistic for Age
 
 ```{r}
 summary(dataset$age)
