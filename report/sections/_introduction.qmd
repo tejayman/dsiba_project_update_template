@@ -1,9 +1,23 @@
 # Introduction
 
-VENETO
+## Project Goals
 
-Obesity has become a major global health issue, with its prevalence tripling since 1975. According to the WHO, 1.9 billion adults were overweight in 2022, with over 650 million classified as obese. In Latin America and the Caribbean, the problem is particularly pressing: as of 2022, 25% of adults were obese, with rates reaching 36.1% in Mexico and around 28% and 23% in Peru and Colombia, respectively. These alarming trends contribute to rising cases of obesity-related diseases, such as diabetes and cardiovascular issues. This project, using data from Mexico, Peru, and Colombia—77% of which is synthetically generated via SMOTE and 23% collected from 498 participants online—seeks to explore how lifestyle factors contribute to obesity in these regions. While the synthetic nature of the data limits real-world applicability, this scenario allows for the practical application of concepts from the "Data Science in Business Analytics" course, enabling us to identify key patterns in dietary habits and physical activity that contribute to obesity.
+Obesity has emerged as one of the most pressing global health crises, with its prevalence nearly tripling worldwide since 1975, according to the World Health Organization (WHO). This alarming trend has fueled a dramatic rise in obesity-related diseases, including diabetes, cardiovascular conditions, and hypertension, imposing significant burdens on healthcare systems and economies. In Latin America and the Caribbean, the situation is particularly concerning: as of 2022, the Pan American Health Organization (PAHO) reported that nearly 25% of adults in the region are affected by obesity, emphasizing the urgent need for effective public health interventions. The crisis is especially acute in the countries central to this research. In 2018, Mexico recorded an adult obesity rate of 36.1%, while Peru and Colombia reported similarly worrisome rates of approximately 28% and 23%, respectively.
 
-Our primary goal is to identify the most significant behavioral factors contributing to obesity in these countries by conducting exploratory analyses on lifestyle patterns and building a regression and a predictive model based on factors like diet, activity level, and demographics. Visualizations will also be developed to illustrate findings and relationships clearly, enhancing stakeholder understanding of the insights derived. Although synthetic data limits the findings' applicability, this exercise provides valuable training in data analysis techniques and the potential insights obtainable from comprehensive, real-world data.
+This widespread prevalence underscores the critical need for research focused on understanding and addressing the multifaceted factors contributing to obesity. In this context, the present study adopts an exploratory and primarily educational approach to examine the relationships between dietary habits, physical activity, and demographic variables, aiming to uncover their impact on obesity levels in Mexico, Peru, and Colombia. By leveraging a dataset consisting of 77% synthetically generated data (produced via the SMOTE algorithm) and 23% user-collected data from 498 participants, the research seeks to provide meaningful insights into this complex issue.
 
-The main research questions this project addresses include identifying which lifestyle factors significantly impact obesity in these regions and exploring whether obesity can be predicted based on these factors. By focusing on key lifestyle elements—diet and physical activity—that influence obesity, the data used is tailored to the cultural contexts of Mexico, Peru, and Colombia. Through these insights, we aim to inform public health initiatives, providing actionable data for healthcare organizations and policymakers to address the growing obesity crisis effectively.
+While the reliance on synthetic data and a non-representative sample limits direct real-world applicability, this study offers a unique opportunity to apply theoretical knowledge gained during the "Data Science in Business Analytics" course to a simulated scenario. By identifying patterns, correlations, and potential predictors of obesity, the research highlights the importance of data-driven approaches in addressing significant public health challenges. Ultimately, the findings aim to lay the groundwork for future studies and contribute to the development of informed public health strategies and healthcare policies, demonstrating the transformative potential of data analytics in managing and mitigating complex issues.
+
+## Research Questions
+
+-   **Question 1**
+
+    What are the key lifestyle and behavioral factors that significantly contribute to obesity in Mexico, Peru, and Colombia?
+
+-   **Question 2**
+
+    Can we predict whether a person will be obese based on some given combinations of factors?
+
+-   **Question 3**
+
+    How can these insights be effectively leveraged to inform public health initiatives and combat the escalating health crisis?
