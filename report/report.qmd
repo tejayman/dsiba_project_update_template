@@ -49,14 +49,18 @@ abstract: |
 source(here::here("src", "setup.R"))
 ```
 
-::: callout-tip
+::: {.callout-tip}
 ### How to include sections separately
 
--   You can use `{{include X}}` to include different sections of your report as separate `.qmd` files. This is also well documented in the Quarto documentation: <https://quarto.org/docs/authoring/includes>
+- You can use `{{include X}}` to include different sections of your report as separate `.qmd` files. This is also well documented in the Quarto documentation: <https://quarto.org/docs/authoring/includes>
 
--   As mentioned in the documentation, we have used (\_) prefix for the included files (e.g., `_introduction.qmd` and `_data.qmd`). You should always use an underscore prefix with included files so that they are automatically ignored (i.e. not treated as standalone files) by a quarto render of a project (not absolutely necessary in your case, but highly recommended).
+- As mentioned in the documentation, we have used (_) prefix for the included files (e.g., `_introduction.qmd` and `_data.qmd`). You should always use an underscore prefix with included files so that they are automatically ignored (i.e. not treated as standalone files) by a quarto render of a project (not absolutely necessary in your case, but highly recommended).
 
--   Rendering only `report.qmd` will render also all the other files.
+- Rendering only `report.qmd` will render also all the other files.
 :::
 
-{{< include sections/_introduction.qmd >}} {{< include sections/_data.qmd >}} {{< include sections/_eda.qmd >}} {{< include sections/_analysis.qmd >}} {{< include sections/_conclusion.qmd >}}
+{{< include sections/_introduction.qmd >}}
+{{< include sections/_data.qmd >}}
+{{< include sections/_eda.qmd >}}
+{{< include sections/_analysis.qmd >}}
+{{< include sections/_conclusion.qmd >}}
