@@ -173,9 +173,9 @@ ggplot(dataset, aes(x = age, fill = obesity_lev)) +
   xlim(14, 50) # Limit the x-axis to 0–50
 ```
 
-Some peaks appear sharp and could indicate overfitting or unnatural clustering due to synthetic data (for example, a prominent peak in "Obesity Type I" around the age of 30). The categories appear to be well-separated, which may help the model learn patterns effectively, but it’s essential to ensure these separations are logical and not artifacts introduced by SMOTE.
+This graph allows us to assess the age distribution across obesity levels and to evaluate the impact of the SMOTE algorithm in generating synthetic data. Two key takeaways emerge: first, the distributions show a clear separation between obesity categories, particularly with younger ages dominating in lower obesity levels (e.g., Insufficient Weight and Normal Weight) and older ages appearing more prominently in higher obesity levels (e.g., Obesity Type II and III). Second, sharp peaks, such as the one around age 30 in "Obesity Type I," could signal potential artifacts from data synthesis. While these patterns indicate that the dataset maintains logical trends, further validation is necessary to confirm that these separations and peaks reflect realistic population characteristics and not artificial biases introduced during data augmentation. Overall, the dataset appears well-structured, but these observations warrant careful consideration during analysis.
 
-Calculate summary statistics by obesity level.
+Summary statistics by obesity level.
 
 ```{r}
 dataset %>%
