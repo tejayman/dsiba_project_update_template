@@ -1,4 +1,3 @@
-
 # 3. Exploratory Data Analysis (EDA)
 
 #### 3.1 Descriptive statistics and distribution analysis
@@ -31,8 +30,6 @@ ggplot(dataset, aes(x = obesity_lev, y = age, fill = obesity_lev)) +
 
 The violin plot shows, more clearly, how individuals in the lower obesity categories, such as insufficient and normal weight, are predominantly younger, with ages concentrated between 14 and 30 years. In contrast, higher obesity levels exhibit a broader age range, with a peak density observed around 30–40 years, particularly in Obesity Type I and Type II. Severe obesity (Type III) is rare in younger individuals and becomes more prominent in the mid-adulthood age group. This visualization underscores the gradual progression of obesity risk with age and emphasizes the critical need for early intervention strategies to address weight-related health issues, particularly during early and mid-adulthood when such risks become more pronounced.
 
-
-
 Age Distribution with SMOOTH Trend Line for Obesity Probability.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -64,6 +61,7 @@ ggplot(dataset, aes(x = height)) +
   labs(title = "Height Distribution", x = "Height (m)", y = "Count") +
   theme_minimal()
 ```
+
 The height histogram shows the height distribution (in meters) and is approximately normal, with a slight right skew. Most values fall between 1.45m and 1.98m, with a peak around 1.8m, indicating it’s the most frequent height. The range is realistic, with no visible extreme outliers, and the standard deviation (0.09) indicates low variability. I would like to add that the mean and median are both 1.7m, confirming a nearly symmetrical distribution.
 
 Height by Obesity Level
@@ -79,7 +77,7 @@ ggplot(dataset, aes(x = obesity_lev, y = height, fill = obesity_lev)) +
 
 ```
 
-The plot shows for height, relatively low variability within each category, with overlapping ranges between most groups. Individuals with Insufficient Weight and Normal Weight have slightly narrower distributions, centered around similar heights (~1.7 m). As obesity levels increase (e.g., Obesity Type I–III), the distributions remain consistent, suggesting height is not strongly associated with obesity classification. This suggests that weight may be more influential than height alone in determining obesity level.
+The plot shows for height, relatively low variability within each category, with overlapping ranges between most groups. Individuals with Insufficient Weight and Normal Weight have slightly narrower distributions, centered around similar heights (\~1.7 m). As obesity levels increase (e.g., Obesity Type I–III), the distributions remain consistent, suggesting height is not strongly associated with obesity classification. This suggests that weight may be more influential than height alone in determining obesity level.
 
 ##### Weight
 
@@ -102,7 +100,7 @@ ggplot(dataset, aes(x = weight, fill = gender)) +
   theme_minimal()
 ```
 
-The density plot reveals distinct weight distributions between genders. Females generally weight less, with a peak around 70 units, while males peak around 85 and 115 units, indicating a tendency toward higher weights. The overlapping region around 80-90 units shows weights common to both genders,  but the distinct density peaks emphasize gender-based differences in weight distribution. Overall, males dominate at higher ranges Weight ranges from 39 to 173 units, with an average (mean) weight of 86.6 units. The median weight is 83 units, with a standard deviation of 26.2, indicating moderate spread.
+The density plot reveals distinct weight distributions between genders. Females generally weight less, with a peak around 70 units, while males peak around 85 and 115 units, indicating a tendency toward higher weights. The overlapping region around 80-90 units shows weights common to both genders, but the distinct density peaks emphasize gender-based differences in weight distribution. Overall, males dominate at higher ranges Weight ranges from 39 to 173 units, with an average (mean) weight of 86.6 units. The median weight is 83 units, with a standard deviation of 26.2, indicating moderate spread.
 
 Weight by obesity level
 
@@ -180,7 +178,6 @@ ggplot(dataset, aes(x = obesity_lev, fill = food_btw_meals)) +
     )
 ```
 
-
 These charts provide a clear illustration of how the frequency of eating between meals varies across obesity levels. The most dominant behavior across all categories is "Sometimes," which peaks in intermediate levels like Normal Weight and Overweight Level I, reflecting a common pattern of moderate snacking. However, as obesity levels increase to Obesity Types I–III, the responses for "Frequently" and "Always" diminish, while "Sometimes" becomes even more prevalent. This shift could indicate that higher obesity levels are more associated with habitual moderate snacking rather than excessive meal-snacking frequency. On the other hand, "No" responses remain negligible across all obesity levels, suggesting that eating between meals is almost universal in this population. This pattern underscores the importance of examining not just the frequency but also the quality and context of snacking as potential contributors to obesity progression.
 
 ##### High-caloric food consumption
@@ -197,7 +194,6 @@ ggplot(dataset, aes(x = caloric_food, fill = obesity_lev)) +
 ```
 
 The dodged bar chart clearly shows that the majority of individuals, especially in the higher obesity categories (Obesity Type I–III), report consuming high-caloric foods ("yes"). This trend becomes increasingly pronounced as obesity levels rise, with very few individuals reporting "no" consumption in these categories. In contrast, lower obesity levels (e.g., Normal Weight, Overweight Level I) show a slightly higher representation of "no" responses, indicating a potential shift in dietary habits across obesity levels.
-
 
 ```{r}
 # Grouped Bar Chart of High-Caloric Food by Obesity Level (Proportions within each Obesity Level)
@@ -250,8 +246,6 @@ ggplot(filtered_dataset, aes(x = freq_alcohol, fill = obesity_lev)) +
 
 The chart shows that "Sometimes" is the dominant alcohol consumption frequency across all obesity levels, particularly in Normal Weight, Overweight Level I, and II categories. As obesity increases, "Frequently" becomes slightly more prominent, especially in Obesity Type III, while "No" responses decrease, being more common in lower obesity levels such as Insufficient and Normal Weight. The "Always" responses are excluded from this chart due to their near absence in the dataset, highlighting that excessive alcohol consumption is rare. This trend underlines the potential relationship between moderate-to-frequent alcohol consumption and higher obesity levels, emphasizing its importance for obesity-related behavioral research.
 
-
-
 ```{r}
 # Prepare the data summary for 'Sometimes' and 'No' responses
 data_summary <- dataset %>%
@@ -285,8 +279,6 @@ The proportion of individuals who drink alcohol "Sometimes" increases with highe
 
 A possible interaction to investigate later is between alcohol frequency and caloric food preference, as both behaviors seem linked to higher obesity levels. Exploring this could reveal if individuals with a preference for caloric foods and moderate alcohol consumption have a compounding effect on obesity risk. This investigation could help clarify whether combined lifestyle factors contribute more significantly to higher obesity levels than each factor alone.
 
-
-
 Monitoring of the calories in the day.
 
 ```{r}
@@ -316,12 +308,9 @@ ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check,
 
 ```
 
-
 The Dodged Bar Chart highlights two main trends regarding calorie-checking behavior across obesity levels: a significant increase in "Yes" responses as obesity levels rise, particularly from Overweight Level II onward, and a decrease in "No" responses, which are more prevalent in lower obesity levels like Normal Weight and Insufficient Weight. The second graph simplifies these trends by clearly illustrating the proportional shift between "Yes" and "No" responses, making the contrast between lower and higher obesity levels more visually apparent. Together, these visualizations emphasize a potential association between obesity severity and an increased tendency to check calorie intake, suggesting heightened dietary awareness in higher obesity categories.
 
-
 ##### Vegetable consumption
-
 
 ```{r}
 ggplot(dataset, aes(x = vegetable_food)) +
@@ -331,6 +320,7 @@ ggplot(dataset, aes(x = vegetable_food)) +
   theme_minimal() +
   labs(x = "Vegetable Food Consumption", y = "Density")
 ```
+
 ```{r, message=FALSE, warning=FALSE}
 ggplot(dataset, aes(x = weight, y = vegetable_food, color = obesity_lev)) +
     geom_point(alpha = 0.6) +
@@ -341,15 +331,15 @@ ggplot(dataset, aes(x = weight, y = vegetable_food, color = obesity_lev)) +
     theme_minimal() +
     coord_cartesian(xlim= c(40, 135), ylim= c(2, 3))
 ```
+
 The scatterplot provided with the trend line illustrates a distinct, non-linear relationship: vegetable consumption initially decreases as weight increases but then begins to rise again at higher weight levels.
 
 This pattern suggests that individuals with lower weight, particularly those in the Insufficient Weight and Normal Weight categories, tend to report higher vegetable consumption. As weight progresses toward the Overweight categories, vegetable consumption decreases slightly, indicating a possible reduction in healthy dietary habits. However, at the upper end of the weight spectrum, corresponding to Obesity Type II and Obesity Type III, vegetable consumption increases again, potentially due to dietary interventions or awareness in this group.
 
 The trend reveals two possible key insights:
 
-- A dip in vegetable consumption occurs in intermediate weight ranges, aligning with the overweight population.
-- The sharp increase in vegetable consumption among the most obese individuals may reflect lifestyle adjustments prompted by health concerns or medical advice.
-
+-   A dip in vegetable consumption occurs in intermediate weight ranges, aligning with the overweight population.
+-   The sharp increase in vegetable consumption among the most obese individuals may reflect lifestyle adjustments prompted by health concerns or medical advice.
 
 ##### Physical activity
 
@@ -383,7 +373,6 @@ Physical activity levels show a slight decline as obesity levels increase, parti
 
 The graph reveals a distinct trend: individuals in lower obesity categories engage in more physical activity compared to those in higher obesity categories. This trend suggests an inverse relationship between physical activity and obesity levels.
 
-
 ##### Water consumption
 
 Plot histogram and density for water consumption.
@@ -411,10 +400,10 @@ ggplot(dataset, aes(x = weight, y = ch2o, color = obesity_lev)) +
 coord_cartesian(xlim= c(35, 135))
 
 ```
+
 The scatterplot visualizes the relationship between weight and water consumption (ch2o), categorized by obesity levels. The trend line reveals a slightly increasing pattern of water consumption as weight increases, though the relationship is relatively weak and mostly linear.
 
 This pattern suggests that individuals with Insufficient Weight and Normal Weight categories generally report slightly lower water consumption compared to individuals in the higher weight categories, such as Obesity Type II and III. The increase in water consumption among higher weight groups could indicate attempts to adopt healthier habits or increased hydration needs due to larger body sizes. However, the relatively flat trend across most weight ranges suggests that water consumption does not vary dramatically across different weight categories, highlighting a potential area for targeted interventions to promote hydration as a component of healthy dietary behavior.
-
 
 ##### Technology utilization
 
@@ -428,8 +417,6 @@ ggplot(dataset, aes(x = use_tech)) +
   theme_minimal()
 ```
 
-The histogram shows a strong concentration at discrete values (0, 1, and 2), likely reflecting the original categorical nature of the data before SMOTE. This also aligns with observed density peaks.
-
 Density of Use of Technology by Obesity Level.
 
 ```{r}
@@ -439,30 +426,10 @@ ggplot(dataset, aes(x = use_tech, fill = obesity_lev)) +
   theme_minimal()
 ```
 
-The density plot reveals distinct peaks in technology usage across obesity levels, with some levels like Obesity_Type_III having higher peaks, suggesting varied levels of technology use in these categories.
+This density plot provides a perspective on the use of technology across different obesity levels. A striking feature is the sharp, dominant peak in Obesity Type III (yellow) around the value of 1. This pattern diverges notably from the smoother and more evenly distributed curves seen in other obesity categories, suggesting a unique behavioral trend in this group.
 
-Boxplot by Obesity Level.
+The peak indicates a strong clustering of individuals in Obesity Type III who report moderate use of technology, which may reflect consistent engagement with technology-based activities such as sedentary work, entertainment, or even health-monitoring applications. In contrast, other obesity categories, such as Obesity Type II and Overweight Level II, exhibit more balanced distributions without a single dominant peak, hinting at more varied technology usage patterns.
 
-```{r}
-ggplot(dataset, aes(x = obesity_lev, y = use_tech, fill = obesity_lev)) +
-  geom_boxplot() +
-  labs(title = "Boxplot of Use of Technology by Obesity Level", x = "Obesity Level", y = "Use of Technology") +
-  theme_minimal() +
-  theme(legend.position = "none")
-```
+This observation raises interesting questions about the role of technology in shaping lifestyle behaviors in Obesity Type III individuals. It may point to a reliance on technology that correlates with a sedentary lifestyle, a known risk factor for obesity. Alternatively, it could reflect targeted interventions or habits specific to this group. 
 
-Technology use shows some variation across obesity levels, with certain categories (like Obesity_Type_I and Obesity_Type_III) showing higher median usage compared to others.
 
-Scatter Plot with Age.
-
-```{r}
-ggplot(dataset, aes(x = age, y = use_tech)) +
-  geom_point(alpha = 0.4, color = "blue") +
-  geom_smooth(method = "lm", color = "red", linetype = "dashed") +
-  labs(title = "Scatter Plot of Use of Technology vs Age", x = "Age", y = "Use of Technology") +
-  theme_minimal()
-```
-
-There is a noticeable negative correlation between age and technology use, indicating younger individuals tend to use technology more than older ones.
-
-The 'Use of Technology' variable shows a clear trend where younger individuals use technology more frequently, as seen in the negative correlation with age. Differences in technology usage across obesity levels suggest it might have predictive value in distinguishing between levels, although the SMOTE algorithm has introduced interpolated values that blur strict categories. This variable could therefore help predict obesity levels, especially if technology usage patterns are indicative of lifestyle factors associated with obesity.

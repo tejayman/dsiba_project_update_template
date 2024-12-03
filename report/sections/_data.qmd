@@ -32,7 +32,7 @@ Each package serves a specific purpose:
 - cluster: For clustering algorithms.
 - reshape2: For data reshaping, especially during visualization.
 
-```{r, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
