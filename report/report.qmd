@@ -2,10 +2,12 @@
 title:Project Update Report (Group G): Code and Structure
 
 author:
- - Dorofieiev, Illia
- - Pizzi, Alessandro
- - Lovato, Andrea
- - El Abed, Ayman
+
+ - Alessandro Pizzi
+ - Andrea Lovato
+ - Ayman El Abed
+ - Illia Dorofieiev
+
 institute: University of Lausanne
 date: today
 title-block-banner: "#0095C8" # chosen for the university of lausanne
@@ -38,7 +40,6 @@ abstract: |
   This is the abstract of the report. It should be a short summary of the project, the data, the analysis and the results. It should be concise and to the point. It should not be longer than 250 words.
 ---
 
-
 ```{r}
 #| label: setup
 #| echo: false
@@ -50,13 +51,12 @@ source(here::here("src", "setup.R"))
 
 ::: {.callout-tip}
 ### How to include sections separately
+
 - You can use `{{include X}}` to include different sections of your report as separate `.qmd` files. This is also well documented in the Quarto documentation: <https://quarto.org/docs/authoring/includes>
 
 - As mentioned in the documentation, we have used (_) prefix for the included files (e.g., `_introduction.qmd` and `_data.qmd`). You should always use an underscore prefix with included files so that they are automatically ignored (i.e. not treated as standalone files) by a quarto render of a project (not absolutely necessary in your case, but highly recommended).
 
 - Rendering only `report.qmd` will render also all the other files.
-
-
 :::
 
 {{< include sections/_introduction.qmd >}}
