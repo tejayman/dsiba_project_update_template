@@ -1,17 +1,52 @@
+# Data
 
-### 2. Data
+## Sources
 
-We planned to acquire data from a publicly available dataset.
+The dataset utilized in this project was obtained from the UCI Machine Learning Repository, a reputable and extensively used platform for data science and machine learning projects. Originally compiled by researchers at the Universidad de la Costa, Colombia, the dataset combines 77% synthetically generated data with 23% real-world data collected through a structured online survey. The synthetic data, created using the Synthetic Minority Over-sampling Technique (SMOTE) in Weka, addresses class imbalance, enhancing the dataset's suitability for machine learning tasks. The real-world data, gathered from 498 participants over a 30-day period, captures detailed self-reported information on dietary habits, physical activity levels, and demographic characteristics. While synthetic data introduces uniformity and balance, it inherently lacks the complexity of real-world variability, and the user-collected data, though authentic, is susceptible to self-reporting biases and sampling limitations. These characteristics, along with the dataset’s diverse origins, make it an invaluable resource for simulating real-world challenges in healthcare analytics.
 
-The dataset used for this project, titled "Estimation of Obesity Levels Based on Eating Habits and Physical Condition," was sourced from the UCI Machine Learning Repository.
+## Description
 
-This dataset, available in CSV, was originally compiled by researchers at the Universidad de la Costa, Colombia, and includes of both synthetically generated data and user-collected data. The 23% of the data was collected through a web page using a survey accesible online for 30 days, in which 498 individuals provided information regarding their dietary habits, physical activity levels, and demographic data. The remaining 77% of the dataset was generated synthetically using the SMOTE algorithm (Synthetic Minority Over-sampling Technique) in Weka. SMOTE was applied to balance the dataset, addressing issues of class imbalance by generating synthetic examples for minority classes.
+The dataset consists of 2111 records and 17 attributes, offering a detailed examination of the factors contributing to obesity. The attributes represent a mix of categorical and continuous variables, providing insights into demographic, lifestyle, and behavioral factors.
 
-At the end, the obtained dataset contains 17 attributes and 2111 records.
+The variables include:
 
-There are limitations and challenges associated with using this data. First, the reliance on synthetic data means that the results may not accurately represent real-world scenarios, as it lacks the nuances and variability present in genuine human behaviors. Second, while the user-collected data can provide valuable insights, it may be subject to biases, such as self-reporting inaccuracies and sampling biases, which can impact the reliability of our findings. Additionally, gathering data from diverse geographical regions might pose challenges in reaching a representative sample, and we must ensure that the survey is accessible and engaging to participants to encourage participation.
+-   **Gender (Categorical):** indicates the gender of the individual (Male/Female).
 
-Below, the steps related to the conducted analyses will be outlined.
+-   **Age (Continuous):** represents the age of participants in years.
+
+-   **Height (Continuous):** the height of individuals in meters.
+
+-   **Weight (Continuous):** the weight of participants in kilograms.
+
+-   **Family History of Overweight (Categorical):** indicates whether a family member has suffered from overweight (Yes/No).
+
+-   **Frequent Consumption of High-Caloric Food (FAVC) (Categorical):** indicates if participants frequently consume high-caloric foods (Yes/No).
+
+-   **Frequency of Vegetable Consumption (FCVC) (Continuous):** scaled from 1 to 3, reflects how often vegetables are consumed (1 = Never, 3 = Always).
+
+-   **Number of Main Meals per Day (NCP) (Continuous):** indicates the typical number of main meals consumed daily.
+
+-   **Consumption of Food Between Meals (CAEC) (Categorical):** describes how often participants eat between meals (e.g., No, Sometimes, Frequently, Always).
+
+-   **Smoking (SMOKE) (Categorical):** indicates whether participants smoke (Yes/No).
+
+-   **Daily Water Consumption (CH2O) (Continuous):** scaled from 1 to 3, reflecting daily water intake (1 = Less than 1 liter, 3 = More than 2 liters).
+
+-   **Calorie Monitoring (SCC) (Categorical):** whether participants monitor their calorie intake (Yes/No).
+
+-   **Physical Activity Frequency (FAF) (Continuous):** scaled from 0 to 4, indicating days of physical activity per week (0 = None, 4 = 4-5 days).
+
+-   **Time Using Technology Devices (TUE) (Continuous):** reflects daily time spent on technological devices, in hours.
+
+-   **Alcohol Consumption (CALC) (Categorical):** indicates the frequency of alcohol consumption (e.g., I don't drink, Sometimes, Frequently, Always).
+
+-   **Transportation Method (MTRANS) (Categorical):** describes the primary mode of transportation (e.g., Walking, Public Transportation, Automobile).
+
+-   **Obesity Level (NObeyesdad) (Categorical):** the target variable, classifying obesity levels into categories such as Normal Weight, Overweight (Levels I and II), and Obesity (Types I, II, III).
+
+The dataset has been pre-processed, with normalization applied to continuous variables and categorical data encoded. SMOTE was used to address class imbalance, but care was taken to minimize artificial patterns. Despite the presence of synthetic data (77%), which ensures balance and diversity, and real-world data (23%), which introduces authenticity, the dataset's combined structure allows for a comprehensive analysis of obesity-related factors while acknowledging potential biases like self-report inaccuracies.
+
+## Wrangling
 
 Import dataset.
 
@@ -23,16 +58,15 @@ kable(head(dataset_raw), format = "markdown", caption = "First 6 Rows of dataset
 
 ```
 
-Load required libraries for data manipulation, visualization, and clustering.
-Each package serves a specific purpose:
+Load required libraries for data manipulation, visualization, and clustering. Each package serves a specific purpose:
 
-- dplyr: For data manipulation (e.g., filtering, summarizing).
-- tidyr: For data tidying (e.g., reshaping).
-- ggplot2: For visualization.
-- corrplot: For correlation matrix visualization.
-- ggridges: For creating ridge plots.
-- cluster: For clustering algorithms.
-- reshape2: For data reshaping, especially during visualization.
+-   dplyr: For data manipulation (e.g., filtering, summarizing).
+-   tidyr: For data tidying (e.g., reshaping).
+-   ggplot2: For visualization.
+-   corrplot: For correlation matrix visualization.
+-   ggridges: For creating ridge plots.
+-   cluster: For clustering algorithms.
+-   reshape2: For data reshaping, especially during visualization.
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -44,10 +78,7 @@ library(cluster)
 library(reshape2)
 ```
 
-#### 2.1 Preprocessing analyses and checks
-
-We rename columns for clarity and ease of use in the analysis.
-The new names are shorter and more intuitive while preserving their original meaning.
+We rename columns for clarity and ease of use in the analysis. The new names are shorter and more intuitive while preserving their original meaning.
 
 ```{r}
   dataset <- dataset_raw %>%
@@ -80,11 +111,9 @@ kable(missing_values, format = "markdown", caption = "Missing Values in Each Col
 
 ```
 
-Missing values are identified by counting NA values for each column.
-All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using dataset <- na.omit(dataset_row) or imputing missing values with appropriate measures (e.g. mean or median).
+Missing values are identified by counting NA values for each column. All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using dataset \<- na.omit(dataset_row) or imputing missing values with appropriate measures (e.g. mean or median).
 
-Check the structure of the dataset to identify data types for each variable.
-This helps in identifying columns that need to be converted or standardized.
+Check the structure of the dataset to identify data types for each variable. This helps in identifying columns that need to be converted or standardized.
 
 ```{r}
 # Capture the structure of the dataset
@@ -96,8 +125,7 @@ kable(str_table, format = "markdown", caption = "Structure of the Dataset")
 
 ```
 
-We convert specific columns to factors for categorical interpretation during analysis.
-Factors ensure proper handling of discrete variables in statistical modeling.
+We convert specific columns to factors for categorical interpretation during analysis. Factors ensure proper handling of discrete variables in statistical modeling.
 
 We arranged the levels of the obesity categories, food consumption between meals, and the frequency of alcohol use to follow a logical ordinal progression, ensuring these variables accurately reflect increasing severity or frequency for improved interpretability and analysis.
 
@@ -154,7 +182,7 @@ nrow(dataset)
 any(duplicated(dataset))
 ```
 
-#### 2.2 In-depth analysis of SMOTE's impact and visualization of class Distribution
+In-depth analysis of SMOTE's impact and visualization of class Distribution
 
 ```{r}
 ggplot(dataset, aes(x = obesity_lev)) +
@@ -168,9 +196,9 @@ ggplot(dataset, aes(x = obesity_lev)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) #Adjusted the text for clarity
 ```
 
-After applying SMOTE, the distribution is noticeably more balanced across all categories,  with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
+After applying SMOTE, the distribution is noticeably more balanced across all categories, with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
 
-#### 2.3 Distribution analysis
+Distribution analysis
 
 Density plot for age.
 
@@ -273,7 +301,10 @@ str(dataset_num)
 
 head(dataset_num)
 ```
-We verified the presence of any potential NA values that might have arisen during the conversion of categorical variables to numeric format. 
+
+### Spotting Mistakes and Missing Data
+
+We verified the presence of any potential NA values that might have arisen during the conversion of categorical variables to numeric format.
 
 ```{r}
 colSums(is.na(dataset_num))
@@ -281,8 +312,9 @@ colSums(is.na(dataset_num))
 
 The results of the test confirmed that there are no NA values in the dataset, indicating that all variables were successfully converted to numeric format while retaining their integrity.
 
+### Listing Anomalies and Outliers
 
-#### 2.4 Correlations
+## Correlation Analysis
 
 In order to select the possible factor influencing obesity level.
 
