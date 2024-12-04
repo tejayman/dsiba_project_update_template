@@ -23,7 +23,7 @@
 packages <- c(
   "here", # for the project's organization
   "readr","dplyr","tidyr","ggplot2","corrplot","ggridges","cluster","reshape2",
-  "tidyverse", "lubridate", # for wrangling
+  "tidyverse", "lubridate","knitr", # for wrangling
   "patchwork", "maps", "scales", # for plotting
   "knitr", "kableExtra", "rmarkdown" # for the report
   # "reticulate", # for using python

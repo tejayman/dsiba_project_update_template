@@ -17,8 +17,10 @@ Import dataset.
 
 ```{r}
 library(here)
+library(knitr)
 dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
-head(dataset_raw)
+kable(head(dataset_raw), format = "markdown", caption = "First 6 Rows of dataset_raw")
+
 ```
 
 Load required libraries for data manipulation, visualization, and clustering.
@@ -74,7 +76,8 @@ Check for missing values in the dataset, missing values are identified by counti
 
 ```{r}
 missing_values <- colSums(is.na(dataset))
-missing_values
+kable(missing_values, format = "markdown", caption = "Missing Values in Each Column")
+
 ```
 
 Missing values are identified by counting NA values for each column.
@@ -84,7 +87,13 @@ Check the structure of the dataset to identify data types for each variable.
 This helps in identifying columns that need to be converted or standardized.
 
 ```{r}
-str(dataset)
+# Capture the structure of the dataset
+str_output <- capture.output(str(dataset))
+# Convert the structure output to a data frame
+str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
+
+kable(str_table, format = "markdown", caption = "Structure of the Dataset")
+
 ```
 
 We convert specific columns to factors for categorical interpretation during analysis.
@@ -117,7 +126,11 @@ dataset <- dataset %>%
 Using str() before and after confirms that each variable has the correct data type, preventing errors during analysis.
 
 ```{r}
-str(dataset)
+str_output <- capture.output(str(dataset))
+str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
+
+kable(str_table, format = "markdown", caption = "Structure of the Dataset")
+
 ```
 
 Check for duplicated rows in the dataset.
@@ -178,7 +191,7 @@ This graph allows us to assess the age distribution across obesity levels and to
 Summary statistics by obesity level.
 
 ```{r}
-dataset %>%
+dataset_stat <- dataset %>%
   group_by(obesity_lev) %>%
   summarize(
     Age_Mean = mean(age, na.rm = TRUE),
@@ -188,6 +201,7 @@ dataset %>%
     Weight_Mean = mean(weight, na.rm = TRUE),
     Weight_SD = sd(weight, na.rm = TRUE)
   )
+kable(dataset_stat,format = "markdown",caption = "Summary statistics by obesity level",digits = 1)
 ```
 
 The summary statistics show relatively consistent means and standard deviations for Age, Height, and Weight across obesity levels, which suggests that SMOTE has preserved the overall distribution without introducing extreme values. Interpretation: Since the means and standard deviations are similar across classes, it appears SMOTE didn’t drastically alter the dataset's variability. This consistency supports the idea that SMOTE effectively balanced the classes without distorting key variable distributions.
