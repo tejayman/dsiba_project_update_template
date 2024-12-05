@@ -95,7 +95,7 @@ abline(v = 0, col = "red", lwd = 2, lty = 2)
 
 **Data Loading and Processing**
 
-BMI was calculated and incorporated into the dataset to facilitate the classification of individuals by obesity status. A binary variable, Obesity, was then created to indicate whether an individual is classified as obese or not, based on their BMI. This variable was transformed into a factor to ensure proper integration into the logistic regression model. To confirm the accuracy and consistency of these transformations, the summary statistics and variable distributions were carefully inspected, ensuring the dataset was properly prepared for analysis.
+To align with the requirements of a logistic regression model, it was necessary to modify the dataset's target variable. The original variable, obesity level, was a multi-class categorical variable representing varying degrees of obesity and non-obesity. Since logistic regression is designed for binary classification, the target variable was converted into a binary format. Individuals with a BMI ≥ 30 were classified as obese (1), while others were classified as non-obese (0). This transformation ensured compatibility with the logistic regression framework. Following this adjustment, the target variable was converted into a factor, and the dataset was reviewed for consistency and readiness for analysis.
 
 ```{r}
 dataset_raw$BMI <- dataset_raw$Weight / (dataset_raw$Height^2)
@@ -117,7 +117,11 @@ str(model_data)
 
 **Model Development**
 
-To develop a predictive model for obesity, we employed logistic regression, a robust method for binary classification tasks.
+Three regression models were employed to ensure a systematic and robust approach to predictor selection and model development. The null model, containing only the intercept, served as a baseline to represent predictions without the influence of any predictors. This provided a reference point to evaluate how much additional explanatory power was gained by including predictors.
+
+The full model, incorporating all predictors, represented the maximum complexity allowable within the dataset. This model helped understand the potential contribution of each variable but carried the risk of overfitting due to its complexity.
+
+The stepwise model, guided by the Akaike Information Criterion (AIC), balanced the simplicity and performance of the model. By iteratively evaluating the inclusion or exclusion of predictors, the stepwise procedure identified the subset of variables that significantly contributed to explaining the outcome while minimizing unnecessary complexity. This process ensured that the final model retained only the most relevant predictors, achieving optimal fit and generalizability. Using these three models allowed for a thorough comparison and the development of a parsimonious and effective predictive model.
 
 ```{r}
 full_model <- glm(Obesity ~ ., data = model_data, family = binomial)
@@ -125,25 +129,29 @@ null_model <- glm(Obesity ~ 1, data = model_data, family = binomial)
 stepwise_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "both", trace = FALSE)
 ```
 
-summary modelli
+Presented below is a comprehensive overview of the logistic regression models.
+
+*Full Model*
 
 ```{r}
 summary(full_model)
 ```
 
-gg
+*Null Model*
 
 ```{r}
 summary(null_model)
 ```
 
-gg
+*Stepwise Model*
 
 ```{r}
 summary(stepwise_model)
 ```
 
-Prevision and confusion matrix
+**Evaluation**
+
+To evaluate the stepwise-selected model, predicted probabilities of obesity were generated for all individuals. These probabilities were converted into binary classifications using a threshold of 0.5. A confusion matrix was constructed to assess the model's performance, providing key metrics such as accuracy, sensitivity, specificity, precision, and F1-score.
 
 ```{r}
 predicted_probs <- predict(stepwise_model, type = "response")
@@ -152,11 +160,74 @@ conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
 print(conf_matrix)
 ```
 
-visualization
+Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
+
+```{r}
+roc_curve <- roc(model_data$Obesity, predicted_probs)
+auc_value <- auc(roc_curve)
+cat("AUC:", round(auc_value, 3))
+```
+
+**Results Visualization**
+
+To assess the distribution of predicted probabilities, a scatter plot was created with observations color-coded by their actual class. This visualization provides a clear overview of the model's predictions and potential misclassifications.
 
 ```{r}
 plot(predicted_probs, col = ifelse(model_data$Obesity == 1, "blue", "red"), pch = 16, xlab = "n° Observation", ylab = "Predicted Probability", main = "Predicted Probabilities of Obesity", cex = 0.6)
 legend("bottomright", legend = c("Obese", "Not Obese"), col = c("blue", "red"), pch = 16)
+```
+
+For additional clarity, the ROC curve was plotted to visually represent the model's performance.
+
+```{r}
+plot(roc_curve, col = "blue", main = "ROC Curve", lwd = 3, xlim = c(0, 1), ylim = c(0, 1.05), xlab = "False Positive Rate", ylab = "True Positive Rate", cex.main = 1.5, cex.lab = 1.2, cex.axis = 1.1)
+legend("topright", legend = paste("AUC =", round(auc_value, 3)), lwd = 0, cex = 1.2, bty = "n")
+grid()
+```
+
+**Predicting Obesity Probability**
+
+To test the model’s ability to predict the probability of individuals becoming obese, six distinct profiles were created, representing a diverse range of lifestyles. Each profile was carefully designed to highlight specific behavioral, dietary, and lifestyle patterns.
+
+The first individual represents a high-risk case for obesity. This person has a family history of being overweight, frequently consumes high-calorie foods and snacks, and eats very few vegetables. They have five meals a day, drink only 0.5 liters of water daily, and do no physical activity. Additionally, they spend 10 hours a day using technology, consume alcohol consistently, and rely primarily on public transportation for mobility.
+
+The second individual exemplifies a very healthy lifestyle. They have no family history of being overweight, rarely consume high-calorie foods or snacks, and eat a large amount of vegetables. Their diet consists of very few meals per day, complemented by a high water intake of 4 liters daily. They do not monitor calorie intake but engage in physical activity five times a week. They walk as their primary mode of transportation, do not consume alcohol, and spend only 0.5 hours daily using technology.
+
+The third individual exhibits a balanced lifestyle but shows some risk factors. This person has a family history of being overweight, frequently consumes snacks and high-calorie foods, and eats a moderate amount of vegetables. They have three meals a day, drink 1 liter of water, and monitor their calorie intake. However, they engage in physical activity only once a week, use technology for 8 hours daily, use motorbike as transportation vehicle, and occasionally consume alcohol.
+
+The fourth individual is physically active and health-conscious. They have no family history of being overweight, do not frequently consume high-calorie foods, but snack occasionally. They eat a lot of vegetables, have a small number of meals per day, and drink 3 liters of water daily. They do not monitor calorie intake but exercise three times a week and use a bicycle for transportation. They consume alcohol frequently but spend only an hour daily using technology.
+
+The fifth individual represents another high-risk case due to a sedentary lifestyle. They have a family history of being overweight, frequently consume high-calorie foods and snacks, and eat very few vegetables. They have four meals a day, drink 2 liters of water, and do no physical activity. They spend 6 hours daily using technology, consume alcohol moderately, and rely on public transportation.
+
+The sixth individual leads a very active lifestyle but has some risk factors due to alcohol and transportation choices. They have no family history of being overweight, do not frequently consume high-calorie foods or snacks, and eat a large amount of vegetables. They have two meals per day, drink 1.5 liters of water, and do not monitor calorie intake. However, they engage in physical activity four times a week, use a motorbike for transportation, do not consume alcohol, and spend 2 hours daily using technology.
+
+These six profiles were designed to test the model’s capacity to handle a wide variety of real-world scenarios, ensuring it can effectively predict obesity probabilities across diverse populations.
+
+```{r}
+new_data <- data.frame(
+  family_history_with_overweight = factor(c("yes", "no", "yes", "no", "yes", "no"), 
+                                          levels = c("yes", "no")),
+  FAVC = factor(c("yes", "no", "yes", "no", "yes", "no"), 
+                levels = c("yes", "no")),
+  FCVC = c(1, 5, 2, 4, 1, 3),
+  NCP = c(5, 1, 3, 2, 4, 2),
+  CAEC = factor(c("Frequently", "Sometimes", "Always", "Sometimes", "Frequently", "Always"), 
+                levels = c("Frequently", "Sometimes", "Always")),
+  SMOKE = factor(c("no", "yes", "no", "yes", "yes", "no"), 
+                 levels = c("yes", "no")),
+  CH2O = c(0.5, 4, 1, 3, 2, 1.5),
+  SCC = factor(c("yes", "no", "yes", "no", "yes", "no"), 
+               levels = c("yes", "no")),
+  FAF = c(0, 5, 1, 3, 0, 4),
+  TUE = c(10, 0.5, 8, 1, 6, 2),
+  CALC = factor(c("Always", "Never", "Sometimes", "Always", "Sometimes", "Never"), 
+                levels = c("Sometimes", "Frequently", "Always", "Never")),
+  MTRANS = factor(c("Public_Transportation", "Walking", "Motorbike", "Bike", "Public_Transportation", "Motorbike"), 
+                  levels = c("Public_Transportation", "Walking", "Bike", "Motorbike"))
+)
+
+predicted_probs <- predict(stepwise_model, newdata = new_data, type = "response")
+predicted_probs
 ```
 
 ## Results
