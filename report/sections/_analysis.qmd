@@ -93,4 +93,66 @@ abline(v = 0, col = "red", lwd = 2, lty = 2)
 
 ### **Logistic Regression Model Development**
 
+prepearing data
+
+```{r}
+dataset_raw$BMI <- dataset_raw$Weight / (dataset_raw$Height^2)
+head(dataset_raw$BMI)
+summary(dataset_raw$BMI)
+dataset_raw$Obesity <- ifelse(dataset_raw$BMI >= 30, 1, 0)
+dataset_raw$Obesity <- as.factor(dataset_raw$Obesity)
+table(dataset_raw$Obesity)
+head(dataset_raw)
+```
+
+preliminary work
+
+```{r}
+predictors <- c("family_history_with_overweight", "FAVC", "FCVC", "NCP", "CAEC", "SMOKE", "CH2O", "SCC", "FAF", "TUE", "CALC", "MTRANS")
+model_data <- dataset_raw[, c("Obesity", predictors)]
+str(model_data)
+```
+
+Building model
+
+```{r}
+full_model <- glm(Obesity ~ ., data = model_data, family = binomial)
+null_model <- glm(Obesity ~ 1, data = model_data, family = binomial)
+stepwise_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "both", trace = FALSE)
+```
+
+summary modelli
+
+```{r}
+summary(full_model)
+```
+
+gg
+
+```{r}
+summary(null_model)
+```
+
+gg
+
+```{r}
+summary(stepwise_model)
+```
+
+Prevision and confusion matrix
+
+```{r}
+predicted_probs <- predict(stepwise_model, type = "response")
+predicted_classes <- ifelse(predicted_probs >= 0.5, 1, 0)
+conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
+print(conf_matrix)
+```
+
+visualization
+
+```{r}
+plot(predicted_probs, col = ifelse(model_data$Obesity == 1, "blue", "red"), pch = 16, xlab = "n° Observation", ylab = "Predicted Probability", main = "Predicted Probabilities of Obesity", cex = 0.6)
+legend("bottomright", legend = c("Obese", "Not Obese"), col = c("blue", "red"), pch = 16)
+```
+
 ## Results
