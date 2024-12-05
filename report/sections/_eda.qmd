@@ -7,8 +7,15 @@
 Descriptive statistic for Age
 
 ```{r}
-summary(dataset$age)
-sd(dataset$age, na.rm = TRUE)
+# this is what was written before in case you don't like the new output 
+#summary(dataset$age)
+# sd(dataset$age, na.rm = TRUE)
+sum_age_df <- tibble::tibble(
+  Metric = c(names(summary(dataset$age)), "Std. Dev"),
+  Value = c(summary(dataset$age), sd(dataset$age, na.rm = TRUE))
+)
+kable(sum_age_df, format = "markdown", caption = "Summary of the age variable")
+
 ```
 
 Age distribution
@@ -49,8 +56,14 @@ Beyond the peak, the trend shows a gradual decline in obesity levels after 30 ye
 Descriptive statistic for Height.
 
 ```{r}
-summary(dataset$height)
-sd(dataset$height, na.rm = TRUE)
+# summary(dataset$height)
+# sd(dataset$height, na.rm = TRUE)
+
+sum_height_df <- tibble::tibble(
+  Metric = c(names(summary(dataset$height)), "Std. Dev"),
+  Value = c(summary(dataset$height), sd(dataset$height, na.rm = TRUE))
+)
+kable(sum_height_df, format = "markdown", caption = "Summary of the height variable")
 ```
 
 Height distribution.
@@ -84,8 +97,14 @@ The plot shows for height, relatively low variability within each category, with
 Descriptive statistic for Weight.
 
 ```{r}
-summary(dataset$weight)
-sd(dataset$weight, na.rm = TRUE)
+# summary(dataset$weight)
+# sd(dataset$weight, na.rm = TRUE)
+
+sum_weight_df <- tibble::tibble(
+  Metric = c(names(summary(dataset$weight)), "Std. Dev"),
+  Value = c(summary(dataset$weight), sd(dataset$weight, na.rm = TRUE))
+)
+kable(sum_weight_df, format = "markdown", caption = "Summary of the weight variable")
 ```
 
 Weight by gender
@@ -198,7 +217,10 @@ The dodged bar chart clearly shows that the majority of individuals, especially 
 ```{r}
 # Grouped Bar Chart of High-Caloric Food by Obesity Level (Proportions within each Obesity Level)
 ggplot(dataset, aes(x = obesity_lev, fill = caloric_food)) +
-  geom_bar(position = "dodge", aes(y = (..count..) / tapply(..count.., ..x.., sum)[..x..]), color = "black") +
+  geom_bar(
+    position = "dodge",
+    aes(y = after_stat(count) / tapply(after_stat(count), after_stat(x), sum)[after_stat(x)]),
+    color = "black") +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
   ggtitle("                                 Grouped Bar Chart of High-Caloric Food Consumption Across Obesity Levels") +
   labs(x = "Obesity Levels", y = "Proportion (%)", fill = "High-Caloric Food Consumption") +
@@ -207,8 +229,6 @@ ggplot(dataset, aes(x = obesity_lev, fill = caloric_food)) +
     axis.text.x = element_text(angle = 45, hjust = 1),
     plot.title = element_text(hjust = 0.5, size = 14)
   )
-
-
 
 ```
 
@@ -298,7 +318,7 @@ data_summary <- dataset %>%
   mutate(total = sum(count), proportion = count / total)
 
 ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check, color = calorie_check)) +
-  geom_line(size = 1.2) +
+  geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   scale_y_continuous(labels = scales::percent) +
   scale_color_manual(values = c("no" = "lightcoral", "yes" = "lightblue")) +
@@ -314,8 +334,8 @@ The Dodged Bar Chart highlights two main trends regarding calorie-checking behav
 
 ```{r}
 ggplot(dataset, aes(x = vegetable_food)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "lightgreen", color = "black", alpha = 0.6) +
-  geom_density(color = "darkgreen", size = 1) +
+  geom_histogram(aes(y =after_stat(density)), bins = 30, fill = "lightgreen", color = "black", alpha = 0.6) +
+  geom_density(color = "darkgreen", linewidth = 1) +
   ggtitle("Histogram and Density of Vegetable Food Consumption") +
   theme_minimal() +
   labs(x = "Vegetable Food Consumption", y = "Density")
