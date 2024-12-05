@@ -25,7 +25,7 @@ packages <- c(
   "readr","dplyr","tidyr","ggplot2","corrplot","ggridges","cluster","reshape2",
   "tidyverse", "lubridate","knitr", # for wrangling
   "patchwork", "maps", "scales", # for plotting
-  "knitr", "kableExtra", "rmarkdown" # for the report
+  "knitr", "kableExtra", "rmarkdown","Metrics" # for the report
   # "reticulate", # for using python
 )
 

@@ -297,9 +297,11 @@ dataset_num <- dataset_num%>%
 dataset_num <- dataset_num %>%
   mutate(across(where(is.factor), ~ as.numeric(.)))
 
-str(dataset_num)
 
-head(dataset_num)
+str_output <- capture.output(str(dataset_num))
+table_num_str <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
+
+kable(table_num_str,format =  "markdown", caption = "structure of the numerical dataset")
 ```
 
 ### Spotting Mistakes and Missing Data
@@ -307,7 +309,8 @@ head(dataset_num)
 We verified the presence of any potential NA values that might have arisen during the conversion of categorical variables to numeric format.
 
 ```{r}
-colSums(is.na(dataset_num))
+nb_na<- colSums(is.na(dataset_num))
+kable(nb_na, format = "markdown",caption = "Presence of potential NA values in the dataset")
 ```
 
 The results of the test confirmed that there are no NA values in the dataset, indicating that all variables were successfully converted to numeric format while retaining their integrity.
