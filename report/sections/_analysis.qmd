@@ -45,7 +45,7 @@ grid(nx = NULL, ny = NULL, lty = 0.5, col = "black")
 boxplot(dataset_raw$Height, main = "Height Distribution", col = "lightgreen", border = "darkgreen", notch = TRUE, ylab = "Height (m)", ylim = c(1.4, 2))
 ```
 
-**Linear Regression Model Development**
+**Model Development**
 
 A linear regression model was built to examine the relationship between BMI, weight, and height. The model summary provided key performance metrics and insights into variable contributions.
 
@@ -93,7 +93,9 @@ abline(v = 0, col = "red", lwd = 2, lty = 2)
 
 ### **Logistic Regression Model Development**
 
-prepearing data
+**Data Loading and Processing**
+
+BMI was calculated and incorporated into the dataset to facilitate the classification of individuals by obesity status. A binary variable, Obesity, was then created to indicate whether an individual is classified as obese or not, based on their BMI. This variable was transformed into a factor to ensure proper integration into the logistic regression model. To confirm the accuracy and consistency of these transformations, the summary statistics and variable distributions were carefully inspected, ensuring the dataset was properly prepared for analysis.
 
 ```{r}
 dataset_raw$BMI <- dataset_raw$Weight / (dataset_raw$Height^2)
@@ -105,7 +107,7 @@ table(dataset_raw$Obesity)
 head(dataset_raw)
 ```
 
-preliminary work
+Twelve predictors associated with obesity-related behaviors, dietary habits, physical activity, and lifestyle factors were selected for analysis. These variables, along with the binary target variable Obesity (1 = obese, 0 = not obese), formed the dataset for logistic regression modeling. The dataset was reviewed to ensure correct structure and readiness for analysis.
 
 ```{r}
 predictors <- c("family_history_with_overweight", "FAVC", "FCVC", "NCP", "CAEC", "SMOKE", "CH2O", "SCC", "FAF", "TUE", "CALC", "MTRANS")
@@ -113,7 +115,9 @@ model_data <- dataset_raw[, c("Obesity", predictors)]
 str(model_data)
 ```
 
-Building model
+**Model Development**
+
+To develop a predictive model for obesity, we employed logistic regression, a robust method for binary classification tasks.
 
 ```{r}
 full_model <- glm(Obesity ~ ., data = model_data, family = binomial)
