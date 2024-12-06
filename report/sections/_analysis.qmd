@@ -154,18 +154,52 @@ summary(stepwise_model)
 To evaluate the stepwise-selected model, predicted probabilities of obesity were generated for all individuals. These probabilities were converted into binary classifications using a threshold of 0.5. A confusion matrix was constructed to assess the model's performance, providing key metrics such as accuracy, sensitivity, specificity, precision, and F1-score.
 
 ```{r}
+# predicted_probs <- predict(stepwise_model, type = "response")
+# predicted_classes <- ifelse(predicted_probs >= 0.5, 1, 0)
+# conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
+# print(conf_matrix)
+
+```
+
+
+
+
+
+
+
+
+```{r}
+library(caret)
+library(pROC)
+# Predict probabilities from the stepwise model
 predicted_probs <- predict(stepwise_model, type = "response")
+
+# Convert probabilities to binary classes (using a threshold of 0.5)
 predicted_classes <- ifelse(predicted_probs >= 0.5, 1, 0)
+
+# Create a confusion matrix (comparison of predicted vs. actual values)
 conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
 print(conf_matrix)
+
 ```
+```{r}
+# Compute ROC curve using the actual class labels and predicted probabilities
+roc_curve <- pROC::roc(model_data$Obesity, predicted_probs)
+
+```
+```{r}
+auc_value <- roc_curve$auc
+cat("AUC:", round(auc_value, 3), "\n")
+```
+
 
 Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
 
 ```{r}
-roc_curve <- roc(model_data$Obesity, predicted_probs)
-auc_value <- auc(roc_curve)
-cat("AUC:", round(auc_value, 3))
+# roc_curve <- roc(model_data$Obesity, predicted_probs)
+# auc_value <- auc(roc_curve)
+# cat("AUC:", round(auc_value, 3),"\n")
+# AUC: 0.858
 ```
 
 **Results Visualization**

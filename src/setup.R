@@ -24,7 +24,7 @@ packages <- c(
   "here", # for the project's organization
   "readr","dplyr","tidyr","ggplot2","corrplot","ggridges","cluster","reshape2",
   "tidyverse", "lubridate","knitr", # for wrangling
-  "patchwork", "maps", "scales", # for plotting
+  "patchwork", "maps", "scales","plotly","caret","pROC", # for plotting
   "knitr", "kableExtra", "rmarkdown","Metrics" # for the report
   # "reticulate", # for using python
 )
