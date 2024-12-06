@@ -27,12 +27,14 @@ Age Distribution by Obesity Level (Violin Plot)
 The age distribution varies across obesity levels,highlighting distinct trends. Insufficient and normal weight categories are concentrated among younger individuals (14–30), while overweight and obesity levels shift towards mid-adulthood (20–40), peaking around 30–35 years. Severe obesity (Type III) is rare in younger ages and more common in the 30–40 range. These patterns suggest the progression of weight issues with age and emphasize the need for targeted interventions during early to mid-adulthood to prevent worsening obesity levels.
 
 ```{r}
-ggplot(dataset, aes(x = obesity_lev, y = age, fill = obesity_lev)) +
+g5 <- ggplot(dataset, aes(x = obesity_lev, y = age, fill = obesity_lev)) +
   geom_violin(trim = FALSE, alpha = 0.6) +
   geom_boxplot(width = 0.1, color = "black", fill = "white") +
   labs(title = "Age Distribution by Obesity Level", x = "Obesity Level", y = "Age") +
   theme_minimal() +
    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+plot5 <- ggplotly(g5)
+plot5
 ```
 
 The violin plot shows, more clearly, how individuals in the lower obesity categories, such as insufficient and normal weight, are predominantly younger, with ages concentrated between 14 and 30 years. In contrast, higher obesity levels exhibit a broader age range, with a peak density observed around 30–40 years, particularly in Obesity Type I and Type II. Severe obesity (Type III) is rare in younger individuals and becomes more prominent in the mid-adulthood age group. This visualization underscores the gradual progression of obesity risk with age and emphasizes the critical need for early intervention strategies to address weight-related health issues, particularly during early and mid-adulthood when such risks become more pronounced.
@@ -40,11 +42,13 @@ The violin plot shows, more clearly, how individuals in the lower obesity catego
 Age Distribution with SMOOTH Trend Line for Obesity Probability.
 
 ```{r, message=FALSE, warning=FALSE}
-ggplot(dataset, aes(x = age, y = as.numeric(obesity_lev))) +
+g6 <- ggplot(dataset, aes(x = age, y = as.numeric(obesity_lev))) +
   geom_jitter(alpha = 0.3) +
   geom_smooth(method = "loess", se = FALSE, color = "blue") +
   labs(title = "Trend of Obesity Level with Age", x = "Age", y = "Obesity Level") +
   theme_minimal()
+plot6 <- ggplotly(g6)
+plot6
 ```
 
 The graph shows a smooth trend line capturing the overall pattern. Obesity levels increase significantly from adolescence to early adulthood, peaking around the 25–30 years age range. This period potentially represents a critical transition, where lifestyle factors such as reduced physical activity, higher caloric intake, and metabolic changes can contribute to the steep rise in obesity levels.
@@ -69,10 +73,12 @@ kable(sum_height_df, format = "markdown", caption = "Summary of the height varia
 Height distribution.
 
 ```{r}
-ggplot(dataset, aes(x = height)) +
+g7 <- ggplot(dataset, aes(x = height)) +
   geom_histogram(bins = 20, fill = "purple", color = "black", alpha = 0.7) +
   labs(title = "Height Distribution", x = "Height (m)", y = "Count") +
   theme_minimal()
+plot7 <- ggplotly(g7)
+plot7
 ```
 
 The height histogram shows the height distribution (in meters) and is approximately normal, with a slight right skew. Most values fall between 1.45m and 1.98m, with a peak around 1.8m, indicating it’s the most frequent height. The range is realistic, with no visible extreme outliers, and the standard deviation (0.09) indicates low variability. I would like to add that the mean and median are both 1.7m, confirming a nearly symmetrical distribution.
@@ -82,12 +88,13 @@ Height by Obesity Level
 Box Plot of Height by Obesity Level.
 
 ```{r}
-ggplot(dataset, aes(x = obesity_lev, y = height, fill = obesity_lev)) +
+g8 <- ggplot(dataset, aes(x = obesity_lev, y = height, fill = obesity_lev)) +
   geom_violin(alpha = 0.6) +
   labs(title = "Height Distribution by Obesity Level", x = "Obesity Level", y = "Height") +
   theme_minimal() +
   theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1))
-
+plot8 <- ggplotly(g8)
+plot8
 ```
 
 The plot shows for height, relatively low variability within each category, with overlapping ranges between most groups. Individuals with Insufficient Weight and Normal Weight have slightly narrower distributions, centered around similar heights (\~1.7 m). As obesity levels increase (e.g., Obesity Type I–III), the distributions remain consistent, suggesting height is not strongly associated with obesity classification. This suggests that weight may be more influential than height alone in determining obesity level.
@@ -112,11 +119,13 @@ Weight by gender
 Density plot for weight distribution by gender.
 
 ```{r}
-ggplot(dataset, aes(x = weight, fill = gender)) +
+g9 <- ggplot(dataset, aes(x = weight, fill = gender)) +
   geom_density(alpha = 0.5) +
   labs(title = "Density Plot of Weight by Gender", x = "Weight", y = "Density") +
   scale_fill_manual(values = c("pink", "lightblue"), name = "Gender", labels = c("Female", "Male")) +
   theme_minimal()
+plot9 <- ggplotly(g9)
+plot9
 ```
 
 The density plot reveals distinct weight distributions between genders. Females generally weight less, with a peak around 70 units, while males peak around 85 and 115 units, indicating a tendency toward higher weights. The overlapping region around 80-90 units shows weights common to both genders, but the distinct density peaks emphasize gender-based differences in weight distribution. Overall, males dominate at higher ranges Weight ranges from 39 to 173 units, with an average (mean) weight of 86.6 units. The median weight is 83 units, with a standard deviation of 26.2, indicating moderate spread.
@@ -131,6 +140,7 @@ ggplot(dataset, aes(x = weight, y = obesity_lev, fill = obesity_lev)) +
   labs(title = "Ridgeline Plot of Weight by Obesity Level", x = "Weight", y = "Obesity Level") +
   theme_minimal() +
   theme(legend.position = "none")
+# can't seem to make the interractive plot work 
 ```
 
 This ridgeline plot shows a clear progression in weight distribution across different obesity levels. As the obesity level increases, the weight distribution shifts progressively to higher ranges. "Normal Weight" and "Insufficient Weight" categories are concentrated at lower weights, while higher obesity types (I, II, and III) peak at significantly greater weights, indicating a strong positive association between weight and obesity level The weight distribution has an average of 86.6 kg and a standard deviation of 26.6 kg.
@@ -140,24 +150,29 @@ This ridgeline plot shows a clear progression in weight distribution across diff
 Scatter Plot (height vs weight), colored by obesity level.
 
 ```{r, message=FALSE, warning=FALSE}
-ggplot(dataset, aes(x = height, y = weight, color = obesity_lev)) +
+g11 <- ggplot(dataset, aes(x = height, y = weight, color = obesity_lev)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, aes(group = obesity_lev)) +  # Adds a trend line for each obesity level
   ggtitle("Scatter Plot of Weight vs Height by Obesity Level") +
   theme_minimal() +
   labs(x = "Height", y = "Weight", color = "Obesity Level")
+plot11 <- ggplotly(g11)
+plot11
 ```
 
 Facet Grid for Height and Weight by Obesity Level.
 
 ```{r}
-ggplot(dataset, aes(x = height, y = weight)) +
+g12 <- ggplot(dataset, aes(x = height, y = weight)) +
   geom_point(alpha = 0.7, aes(color = obesity_lev)) +
   facet_wrap(~ obesity_lev) +
   ggtitle("Facet Grid of Weight and Height by Obesity Level") +
   theme_minimal() +
   labs(x = "Height", y = "Weight", color = "Obesity Level") +
   theme(legend.position = "none")
+plot12 <- ggplotly(g12)
+plot12
+
 ```
 
 The scatter plot with trend lines for each obesity level reveals a clear positive correlation between weight and height across all obesity levels. As the obesity level increases, the slope generally becomes steeper, indicating a stronger weight gain relative to height. We created the facet grid to show more clearly the trends to show more clearly how The "Obesity_Type_III" (yellow) category has the steepest slope, suggesting a significant weight increase per unit of height, which is consistent with the highest level of obesity.
@@ -176,7 +191,7 @@ The correlation observed between height and weight (r = 0.463) aligns with exist
 ```{r}
 
 # Dodged Bar Chart for food_btw_meals by obesity levels
-ggplot(dataset, aes(x = food_btw_meals, fill = obesity_lev)) +
+g13 <- ggplot(dataset, aes(x = food_btw_meals, fill = obesity_lev)) +
    geom_bar(position = "dodge", color = "black") +
    ggtitle("Dodged Bar Chart for Food Between Meals by Obesity Levels") +
    labs(x = "Food Between Meals", y = "Count", fill = "Obesity Levels") +
@@ -184,8 +199,11 @@ ggplot(dataset, aes(x = food_btw_meals, fill = obesity_lev)) +
    theme(
          plot.title = element_text(hjust = 0.5, size = 14))
 
+plot13 <- ggplotly(g13)
+plot13
+
 # Stacked Bar Chart of Food Between Meals by Obesity Level (Proportions within each Obesity Level)
-ggplot(dataset, aes(x = obesity_lev, fill = food_btw_meals)) +
+g14 <- ggplot(dataset, aes(x = obesity_lev, fill = food_btw_meals)) +
     geom_bar(position = "fill") + # Stacked bar chart with proportions
     scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + # Format y-axis as percentages
     ggtitle("Proportion of Food Between Meals Across Obesity Levels") + # Shortened and clear title
@@ -195,6 +213,8 @@ ggplot(dataset, aes(x = obesity_lev, fill = food_btw_meals)) +
         axis.text.x = element_text(angle = 45, hjust = 1), # Rotate x-axis text for readability
         plot.title = element_text(hjust = 0.5, size = 14) # Center and style the title
     )
+plot14 <- ggplotly(g14)
+plot14
 ```
 
 These charts provide a clear illustration of how the frequency of eating between meals varies across obesity levels. The most dominant behavior across all categories is "Sometimes," which peaks in intermediate levels like Normal Weight and Overweight Level I, reflecting a common pattern of moderate snacking. However, as obesity levels increase to Obesity Types I–III, the responses for "Frequently" and "Always" diminish, while "Sometimes" becomes even more prevalent. This shift could indicate that higher obesity levels are more associated with habitual moderate snacking rather than excessive meal-snacking frequency. On the other hand, "No" responses remain negligible across all obesity levels, suggesting that eating between meals is almost universal in this population. This pattern underscores the importance of examining not just the frequency but also the quality and context of snacking as potential contributors to obesity progression.
@@ -203,20 +223,22 @@ These charts provide a clear illustration of how the frequency of eating between
 
 ```{r}
 # Dodged Bar Chart for High-Caloric Food Consumption by Obesity Levels
-ggplot(dataset, aes(x = caloric_food, fill = obesity_lev)) +
+g15 <- ggplot(dataset, aes(x = caloric_food, fill = obesity_lev)) +
    geom_bar(position = "dodge", color = "black") +
    ggtitle("    Dodged Bar Chart for High-Caloric Food Consumption by Obesity Levels") +
    labs(x = "High-Caloric Food Consumption", y = "Count", fill = "Obesity Levels") +
    theme_minimal() +
    theme(
          plot.title = element_text(hjust = 0.5, size = 14)) # Center and style the title
+plot15 <- ggplotly(g15)
+plot15
 ```
 
 The dodged bar chart clearly shows that the majority of individuals, especially in the higher obesity categories (Obesity Type I–III), report consuming high-caloric foods ("yes"). This trend becomes increasingly pronounced as obesity levels rise, with very few individuals reporting "no" consumption in these categories. In contrast, lower obesity levels (e.g., Normal Weight, Overweight Level I) show a slightly higher representation of "no" responses, indicating a potential shift in dietary habits across obesity levels.
 
 ```{r}
 # Grouped Bar Chart of High-Caloric Food by Obesity Level (Proportions within each Obesity Level)
-ggplot(dataset, aes(x = obesity_lev, fill = caloric_food)) +
+g16 <- ggplot(dataset, aes(x = obesity_lev, fill = caloric_food)) +
   geom_bar(
     position = "dodge",
     aes(y = after_stat(count) / tapply(after_stat(count), after_stat(x), sum)[after_stat(x)]),
@@ -229,6 +251,8 @@ ggplot(dataset, aes(x = obesity_lev, fill = caloric_food)) +
     axis.text.x = element_text(angle = 45, hjust = 1),
     plot.title = element_text(hjust = 0.5, size = 14)
   )
+plot16 <- ggplotly(g16)
+plot16
 
 ```
 
@@ -251,7 +275,7 @@ filtered_dataset <- dataset %>%
   filter(freq_alcohol != "Always")
 
 # Dodged Bar Chart for freq_alcohol by Obesity Levels (excluding "Always")
-ggplot(filtered_dataset, aes(x = freq_alcohol, fill = obesity_lev)) +
+g17 <- ggplot(filtered_dataset, aes(x = freq_alcohol, fill = obesity_lev)) +
    geom_bar(position = "dodge", color = "black") +
    ggtitle("Dodged Bar Chart for Alcohol Consumption by Obesity Levels") +
    labs(x = "Alcohol Consumption Frequency", y = "Count", fill = "Obesity Levels") +
@@ -259,7 +283,8 @@ ggplot(filtered_dataset, aes(x = freq_alcohol, fill = obesity_lev)) +
    theme(
          plot.title = element_text(hjust = 0.5, size = 14)) # Center and style the title
 
-
+plot17 <- ggplotly(g17)
+plot17
 
 
 ```
@@ -280,7 +305,7 @@ data_summary <- dataset %>%
   ungroup()
 
 # Visualization with updated title
-ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = freq_alcohol, color = freq_alcohol)) +
+g18 <- ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = freq_alcohol, color = freq_alcohol)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +  # Format y-axis as percentages
@@ -293,6 +318,8 @@ ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = freq_alcohol, 
     plot.title = element_text(hjust = 0.5, size = 14),  # Center and style title
     legend.position = "top"
   )
+plot18 <- ggplotly(g18)
+plot18
 ```
 
 The proportion of individuals who drink alcohol "Sometimes" increases with higher obesity levels, peaking in Obesity_Type_III. In contrast, the likelihood of abstaining from alcohol ("no") decreases as obesity levels rise. This pattern suggests that moderate alcohol consumption may be associated with higher obesity levels, while abstention is more common among those with lower obesity levels.
@@ -303,21 +330,22 @@ Monitoring of the calories in the day.
 
 ```{r}
 # Dodged Bar Chart for calorie_check by Obesity Levels
-ggplot(dataset, aes(x = calorie_check, fill = obesity_lev)) +
+g19 <- ggplot(dataset, aes(x = calorie_check, fill = obesity_lev)) +
    geom_bar(position = "dodge", color = "black") +
    ggtitle("    Dodged Bar Chart for the check of the calories by Obesity Levels") +
    labs(x = "High-Caloric Food Consumption", y = "Count", fill = "Obesity Levels") +
    theme_minimal() +
    theme(
          plot.title = element_text(hjust = 0.5, size = 14)) # Center and style the title
-
+plot19 <- ggplotly(g19)
+plot19
 
 data_summary <- dataset %>%
   group_by(obesity_lev, calorie_check) %>%
   summarise(count = n(), .groups = "drop") %>%
   mutate(total = sum(count), proportion = count / total)
 
-ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check, color = calorie_check)) +
+g20 <- ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check, color = calorie_check)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   scale_y_continuous(labels = scales::percent) +
@@ -325,6 +353,8 @@ ggplot(data_summary, aes(x = obesity_lev, y = proportion, group = calorie_check,
   labs(title = "Proportion of Calorie Checking by Obesity Level", x = "Obesity Level", y = "Proportion", color = "Calorie Check") +
   theme_minimal() +
   theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1))
+plot20 <- ggplotly(g20)
+plot20
 
 ```
 
@@ -333,16 +363,20 @@ The Dodged Bar Chart highlights two main trends regarding calorie-checking behav
 ##### Vegetable consumption
 
 ```{r}
-ggplot(dataset, aes(x = vegetable_food)) +
+g21 <- ggplot(dataset, aes(x = vegetable_food)) +
   geom_histogram(aes(y =after_stat(density)), bins = 30, fill = "lightgreen", color = "black", alpha = 0.6) +
   geom_density(color = "darkgreen", linewidth = 1) +
   ggtitle("Histogram and Density of Vegetable Food Consumption") +
   theme_minimal() +
   labs(x = "Vegetable Food Consumption", y = "Density")
+plot21 <- ggplotly(g21)
+plot21
+
+# it creates a loop for the green line and i don't understand why, maybe it is a problem 
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-ggplot(dataset, aes(x = weight, y = vegetable_food, color = obesity_lev)) +
+g22 <- ggplot(dataset, aes(x = weight, y = vegetable_food, color = obesity_lev)) +
     geom_point(alpha = 0.6) +
     geom_smooth(method = "loess", se = FALSE, color = "black") +
     labs(title = "Scatterplot of Weight vs Vegetable Food Consumption", 
@@ -350,6 +384,8 @@ ggplot(dataset, aes(x = weight, y = vegetable_food, color = obesity_lev)) +
          y = "Vegetable Food Consumption") +
     theme_minimal() +
     coord_cartesian(xlim= c(40, 135), ylim= c(2, 3))
+plot22 <- ggplotly(g22)
+plot22
 ```
 
 The scatterplot provided with the trend line illustrates a distinct, non-linear relationship: vegetable consumption initially decreases as weight increases but then begins to rise again at higher weight levels.
@@ -366,12 +402,16 @@ The trend reveals two possible key insights:
 Plot histogram and density.
 
 ```{r}
-ggplot(dataset, aes(x = physical_act)) +
+g23 <- ggplot(dataset, aes(x = physical_act)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", color = "black", alpha = 0.6) +
   geom_density(color = "darkblue", size = 1) +
   ggtitle("Histogram and Density of Physical Activity") +
   theme_minimal() +
   labs(x = "Physical Activity", y = "Density")
+plot23 <- ggplotly(g23)
+plot23
+
+# same thing it creat a loop for the blue line and if that's a problem i don't know how to solve it we should ash the assistant
 ```
 
 The histogram and density plot reveal that physical activity levels have distinct peaks at 0, 1, 2, and 3, suggesting that these values are common reported levels. Intermediate values, likely due to synthetic data or SMOTE, are also present but less frequent.
@@ -379,7 +419,7 @@ The histogram and density plot reveal that physical activity levels have distinc
 Violin plot by category.
 
 ```{r}
-ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  # Replace 'obesity_lev' with any category variable
+g24 <- ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  # Replace 'obesity_lev' with any category variable
   geom_violin(trim = FALSE) +
   geom_boxplot(width = 0.1, color = "black", fill = "white") +
   ggtitle("Violin Plot of Physical Activity by Obesity Level") +
@@ -387,6 +427,10 @@ ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  #
   labs(x = "Obesity Level", y = "Physical Activity") +
   theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+plot24 <- ggplotly(g24)
+plot24
+
+# it gives a weird output of the boxplot. is it a problem?
 ```
 
 Physical activity levels show a slight decline as obesity levels increase, particularly evident in the narrowing distributions and lower medians observed for Obesity Type II and Obesity Type III categories. In contrast, the Insufficient Weight and Normal Weight groups exhibit higher physical activity levels, as reflected by their broader and more symmetrical distributions.
@@ -398,12 +442,14 @@ The graph reveals a distinct trend: individuals in lower obesity categories enga
 Plot histogram and density for water consumption.
 
 ```{r}
-ggplot(dataset, aes(x = ch2o)) +
+g25 <- ggplot(dataset, aes(x = ch2o)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", color = "black", alpha = 0.6) +
   geom_density(color = "darkblue", size = 1) +
   ggtitle("Histogram and Density of Comsumption of Water") +
   theme_minimal() +
   labs(x = "CH2O", y = "Density")
+plot25 <- ggplotly(g25)
+plot25
 ```
 
 This histogram and density plot of daily water consumption (CH2O) shows a clear peak at 2 liters, indicating that most individuals consume around this amount. This aligns with scientific literature, which generally recommends an average daily water intake of about 2 liters for optimal health.
@@ -412,12 +458,14 @@ Violin Plot by Gender.
 
 ```{r, message=FALSE, warning=FALSE}
 # Scatterplot with a LOESS trend line
-ggplot(dataset, aes(x = weight, y = ch2o, color = obesity_lev)) +
+g26 <- ggplot(dataset, aes(x = weight, y = ch2o, color = obesity_lev)) +
     geom_point(alpha = 0.6) +
     geom_smooth(method = "loess", se = FALSE, color = "black") +
     labs(title = "Scatterplot of Weight vs Water Consumption", x = "Weight", y = "Water Consumption (ch2o)") +
     theme_minimal() +
 coord_cartesian(xlim= c(35, 135))
+plot26 <- ggplotly(g26)
+plot26
 
 ```
 
@@ -430,20 +478,24 @@ This pattern suggests that individuals with Insufficient Weight and Normal Weigh
 Histogram with Density.
 
 ```{r}
-ggplot(dataset, aes(x = use_tech)) +
+g27 <- ggplot(dataset, aes(x = use_tech)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = "lightblue", color = "black", alpha = 0.6) +
   geom_density(color = "blue", size = 1) +
   labs(title = "Histogram and Density of Use of Technology", x = "Use of Technology", y = "Density") +
   theme_minimal()
+plot27 <- ggplotly(g27)
+plot27
 ```
 
 Density of Use of Technology by Obesity Level.
 
 ```{r}
-ggplot(dataset, aes(x = use_tech, fill = obesity_lev)) +
+g28 <- ggplot(dataset, aes(x = use_tech, fill = obesity_lev)) +
   geom_density(alpha = 0.5) +
   labs(title = "Density of Use of Technology by Obesity Level", x = "Use of Technology", y = "Density") +
   theme_minimal()
+plot28 <- ggplotly(g28)
+plot28
 ```
 
 This density plot provides a perspective on the use of technology across different obesity levels. A striking feature is the sharp, dominant peak in Obesity Type III (yellow) around the value of 1. This pattern diverges notably from the smoother and more evenly distributed curves seen in other obesity categories, suggesting a unique behavioral trend in this group.
