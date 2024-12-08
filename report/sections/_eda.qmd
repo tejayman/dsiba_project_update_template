@@ -419,18 +419,15 @@ The histogram and density plot reveal that physical activity levels have distinc
 Violin plot by category.
 
 ```{r}
-g24 <- ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  # Replace 'obesity_lev' with any category variable
-  geom_violin(trim = FALSE) +
+g24 <- ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  
+  geom_violin(trim = FALSE, alpha = 0.6) +
   geom_boxplot(width = 0.1, color = "black", fill = "white") +
-  ggtitle("Violin Plot of Physical Activity by Obesity Level") +
-  theme_minimal() +
+    ggtitle("Violin Plot of Physical Activity by Obesity Level") +
   labs(x = "Obesity Level", y = "Physical Activity") +
-  theme(legend.position = "none") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
 plot24 <- ggplotly(g24)
 plot24
-
-# it gives a weird output of the boxplot. is it a problem?
 ```
 
 Physical activity levels show a slight decline as obesity levels increase, particularly evident in the narrowing distributions and lower medians observed for Obesity Type II and Obesity Type III categories. In contrast, the Insufficient Weight and Normal Weight groups exhibit higher physical activity levels, as reflected by their broader and more symmetrical distributions.

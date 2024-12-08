@@ -37,10 +37,10 @@ format:
           breaklines, breaknonspaceingroup, breakanywhere
         }
 abstract: |
-  This is the abstract of the report. It should be a short summary of the project, the data, the analysis and the results. It should be concise and to the point. It should not be longer than 250 words.
+  Obesity has become a global health crisis, contributing to rising rates of non-communicable diseases and placing significant strain on healthcare systems worldwide. In this study, we explore the factors influencing obesity in Mexico, Peru, and Colombia through an analysis of a mixed dataset consisting of 77% synthetically generated data and 23% real-world data from 498 participants. Using data cleaning, visualization, and advanced modeling techniques, we identify key lifestyle and behavioral contributors to obesity, including dietary habits, physical activity, and demographic factors. The study employs linear regression to predict BMI and logistic regression to classify obesity, providing valuable insights into the relationship between these factors and obesity levels. While the findings are limited by the use of synthetic data and a non-representative sample, they underscore the importance of data-driven approaches in addressing public health challenges. This report aims to demonstrate the application of theoretical knowledge in a simulated environment and lay the groundwork for future studies targeting obesity reduction strategies.
 ---
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #| label: setup
 #| echo: false
 #| message: false
@@ -48,16 +48,6 @@ abstract: |
 # loading all the necessary packages
 source(here::here("src", "setup.R"))
 ```
-
-::: {.callout-tip}
-### How to include sections separately
-
-- You can use `{{include X}}` to include different sections of your report as separate `.qmd` files. This is also well documented in the Quarto documentation: <https://quarto.org/docs/authoring/includes>
-
-- As mentioned in the documentation, we have used (_) prefix for the included files (e.g., `_introduction.qmd` and `_data.qmd`). You should always use an underscore prefix with included files so that they are automatically ignored (i.e. not treated as standalone files) by a quarto render of a project (not absolutely necessary in your case, but highly recommended).
-
-- Rendering only `report.qmd` will render also all the other files.
-:::
 
 {{< include sections/_introduction.qmd >}}
 {{< include sections/_data.qmd >}}
