@@ -211,7 +211,7 @@ Distribution analysis
 
 Density plot for age.
 
-```{r, warning=FALSE}
+```{r}
 g2 <- ggplot(dataset, aes(x = age, fill = obesity_lev)) +
   geom_density(alpha = 0.5) +
   theme_minimal() +
@@ -220,7 +220,7 @@ g2 <- ggplot(dataset, aes(x = age, fill = obesity_lev)) +
     x = "Age",
     y = "Density",
     fill = "Obesity Level") +
-  xlim(14, 50) # Limit the x-axis to 0–50
+  xlim(14, 50)
 plotly_plot1 <- ggplotly(g2)
 plotly_plot1
 ```
@@ -264,7 +264,7 @@ Silhouette Score from K-means Clustering: The mean silhouette score of approxima
 
 Creating a Numerical Dataset "dataset_num".
 
-```{r}
+```{r, message=FAlSE, warning=FALSE}
 
 dataset_num <- dataset %>%
   mutate(obesity_lev = recode(obesity_lev,
