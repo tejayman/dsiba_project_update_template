@@ -219,8 +219,7 @@ g2 <- ggplot(dataset, aes(x = age, fill = obesity_lev)) +
     title = "Age Distribution by Obesity Levels",
     x = "Age",
     y = "Density",
-    fill = "Obesity Level") +
-  xlim(14, 50)
+    fill = "Obesity Level")
 plotly_plot1 <- ggplotly(g2)
 plotly_plot1
 ```
