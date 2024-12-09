@@ -36,29 +36,21 @@ The dataset underwent a thorough preprocessing phase, including normalization of
 
 ## Wrangling
 
-Import dataset.
+To begin the wrangling process, we load the essential libraries required for data manipulation, visualization, and clustering. Each package is selected for its specific functionality, enabling efficient and streamlined analysis:
 
-```{r}
-library(here)
-library(knitr)
-dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
-head(dataset_raw) %>%
-  kbl(format = "html", caption = "First 6 Rows of the Initial Dataset") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
-  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
-  scroll_box(width = "100%", height = "400px")
+-   dplyr: for manipulation;
 
-```
+-   tidyr: for data tidying (e.g., reshaping);
 
-Load required libraries for data manipulation, visualization, and clustering. Each package serves a specific purpose:
+-   ggplot2: for visualization;
 
--   dplyr: For data manipulation (e.g., filtering, summarizing).
--   tidyr: For data tidying (e.g., reshaping).
--   ggplot2: For visualization.
--   corrplot: For correlation matrix visualization.
--   ggridges: For creating ridge plots.
--   cluster: For clustering algorithms.
--   reshape2: For data reshaping, especially during visualization.
+-   corrplot: for correlation matrix visualization;
+
+-   ggridges: for creating ridge plots;
+
+-   cluster: for clustering algorithms;
+
+-   reshape2: for data reshaping, especially during visualization.
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)
