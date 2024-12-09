@@ -58,14 +58,13 @@ Beyond the peak, the trend shows a gradual decline in obesity levels after 30 ye
 Descriptive statistic for Height.
 
 ```{r}
-# summary(dataset$height)
-# sd(dataset$height, na.rm = TRUE)
-
+height_summary <- summary(dataset$height)
+height_sd <- sd(dataset$height, na.rm = TRUE)
 sum_height_df <- tibble::tibble(
-  Metric = c(names(summary(dataset$height)), "Std. Dev"),
-  Value = c(summary(dataset$height), sd(dataset$height, na.rm = TRUE))
+  Metric = c(names(height_summary), "Standard Deviation"),
+  Value = round(c(height_summary, height_sd), 2)
 )
-kable(sum_height_df, format = "markdown", caption = "Summary of the height variable")
+kable(sum_height_df, format = "markdown", caption = "Height Variable Statistics")
 ```
 
 Height distribution.
