@@ -8,8 +8,11 @@ The dataset utilized in this project was obtained from the UCI Machine Learning 
 library(here)
 library(knitr)
 dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
-kable(head(dataset_raw), format = "markdown", caption = "First 6 Rows of the initial dataset")
-
+head(dataset_raw) %>%
+  kbl(format = "html", caption = "First 6 Rows of the Initial Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 ## Description
@@ -17,16 +20,19 @@ kable(head(dataset_raw), format = "markdown", caption = "First 6 Rows of the ini
 The dataset consists of 2111 records and 17 attributes, offering a detailed examination of the factors contributing to obesity. The attributes represent a mix of categorical and continuous variables, providing insights into demographic, lifestyle, and behavioral factors.
 
 The variables include:
+
 ```{r}
-val_meaning <- c("indicates the gender of the individual (Male/Female).","represents the age of participants in years.","the height of individuals in meters.","the weight of participants in kilograms.","indicates whether a family member has suffered from overweight (Yes/No).","indicates if participants frequently consume high-caloric foods (Yes/No).","scaled from 1 to 3, reflects how often vegetables are consumed (1 = Never, 3 = Always).","indicates the typical number of main meals consumed daily.","describes how often participants eat between meals (e.g., No, Sometimes, Frequently, Always).","indicates whether participants smoke (Yes/No).","scaled from 1 to 3, reflecting daily water intake (1 = Less than 1 liter, 3 = More than 2 liters).","whether participants monitor their calorie intake (Yes/No).","scaled from 0 to 4, indicating days of physical activity per week (0 = None, 4 = 4-5 days).","reflects daily time spent on technological devices, in hours.","indicates the frequency of alcohol consumption (e.g., I don't drink, Sometimes, Frequently, Always).","describes the primary mode of transportation (e.g., Walking, Public Transportation, Automobile).","the target variable, classifying obesity levels into categories such as Normal Weight, Overweight (Levels I and II), and Obesity (Types I, II, III).")
-
-desc_table <- tibble::tibble(
-  Name = colnames(dataset_raw),               # Column names
-  Type = sapply(dataset_raw, class), 
-  Meaning =  val_meaning# Corresponding data types
+desc_table <- tibble(
+  Name = colnames(dataset_raw),
+  Type = sapply(dataset_raw, class),
+  Meaning = val_meaning
 )
-
-kable(desc_table, format = "markdown", caption = "Variable Descriptions",align = "lccrr")
+desc_table %>%
+  kbl(format = "html", caption = "Variable Descriptions") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  column_spec(1, bold = TRUE) %>%
+  scroll_box(width = "100%", height = "500px")
 ```
 
 The dataset has been pre-processed, with normalization applied to continuous variables and categorical data encoded. SMOTE was used to address class imbalance, but care was taken to minimize artificial patterns. Despite the presence of synthetic data (77%), which ensures balance and diversity, and real-world data (23%), which introduces authenticity, the dataset's combined structure allows for a comprehensive analysis of obesity-related factors while acknowledging potential biases like self-report inaccuracies.
@@ -39,7 +45,11 @@ Import dataset.
 library(here)
 library(knitr)
 dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
-kable(head(dataset_raw), format = "markdown", caption = "First 6 Rows of the dataset")
+head(dataset_raw) %>%
+  kbl(format = "html", caption = "First 6 Rows of the Initial Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  scroll_box(width = "100%", height = "400px")
 
 ```
 
@@ -92,8 +102,11 @@ Check for missing values in the dataset, missing values are identified by counti
 
 ```{r}
 missing_values <- colSums(is.na(dataset))
-kable(missing_values, format = "markdown", caption = "Missing Values in Each Column")
-
+missing_values %>%
+  kbl(format = "html", caption = "Missing Values in Each Column") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 Missing values are identified by counting NA values for each column. All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using dataset \<- na.omit(dataset_row) or imputing missing values with appropriate measures (e.g. mean or median).
@@ -105,9 +118,11 @@ Check the structure of the dataset to identify data types for each variable. Thi
 str_output <- capture.output(str(dataset))
 # Convert the structure output to a data frame
 str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
-
-kable(str_table, format = "markdown", caption = "Structure of the Dataset")
-
+str_table %>%
+  kbl(format = "html", caption = "Structure of the Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 We convert specific columns to factors for categorical interpretation during analysis. Factors ensure proper handling of discrete variables in statistical modeling.
@@ -141,8 +156,11 @@ Using str() before and after confirms that each variable has the correct data ty
 ```{r}
 str_output <- capture.output(str(dataset))
 str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
-
-kable(str_table, format = "markdown", caption = "Structure of the Dataset")
+str_table %>%
+  kbl(format = "html", caption = "Dataset Structure") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
 
 ```
 
@@ -157,7 +175,7 @@ Keep only one instance of each duplicated row.
 
 ```{r}
 dataset <- dataset %>%
-  distinct()
+distinct()
 ```
 
 Check the number of rows after removing duplicates.
@@ -220,7 +238,11 @@ dataset_stat <- dataset %>%
     Weight_Mean = mean(weight, na.rm = TRUE),
     Weight_SD = sd(weight, na.rm = TRUE)
   )
-kable(dataset_stat,format = "markdown",caption = "Summary statistics by obesity level",digits = 1)
+dataset_stat %>%
+  kbl(format = "html", caption = "Summary Statistics by Obesity Level", digits = 1) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 The summary statistics show relatively consistent means and standard deviations for Age, Height, and Weight across obesity levels, which suggests that SMOTE has preserved the overall distribution without introducing extreme values. Interpretation: Since the means and standard deviations are similar across classes, it appears SMOTE didn’t drastically alter the dataset's variability. This consistency supports the idea that SMOTE effectively balanced the classes without distorting key variable distributions.
@@ -292,7 +314,11 @@ dataset_num <- dataset_num %>%
 str_output <- capture.output(str(dataset_num))
 table_num_str <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
 
-kable(table_num_str,format =  "markdown", caption = "structure of the numerical dataset")
+table_num_str %>%
+  kbl(format = "html", caption = "Structure of the Numerical Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 ### Spotting Mistakes and Missing Data
@@ -301,7 +327,15 @@ We verified the presence of any potential NA values that might have arisen durin
 
 ```{r}
 nb_na<- colSums(is.na(dataset_num))
-kable(nb_na, format = "markdown",caption = "Presence of potential NA values in the dataset")
+nb_na %>%
+  kbl(format = "html", caption = "Presence of Potential NA Values in the Dataset") %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"), 
+    full_width = FALSE, 
+    position = "left"
+  ) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 The results of the test confirmed that there are no NA values in the dataset, indicating that all variables were successfully converted to numeric format while retaining their integrity.
