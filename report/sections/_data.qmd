@@ -133,7 +133,9 @@ The transformations ensured the dataset was ready for analysis by restructuring 
 
 The updated structure was reviewed to confirm the accuracy of these adjustments, providing confidence in the preprocessing steps. While further transformations like normalization were not applied, the focus on categorical and ordinal adjustments established a strong foundation for reliable and interpretable analysis. In particular, the levels of obesity categories, food consumption between meals, and frequency of alcohol use were arranged to reflect increasing severity or frequency, ensuring these variables captured their intended relationships and supported clear, accurate insights into the data.
 
-Now, a numerical version of the dataset, called "dataset_num", is created by transforming categorical variables into numerical values, ensuring compatibility with machine learning algorithms and statistical analyses while maintaining logical relationships and interpretability. Additionally, the presence of potential missing values in the transformed dataset is checked and visualized to confirm data integrity and ensure no issues have been introduced during the conversion process.
+Now, a numerical version of the dataset, called "dataset_num", is created by transforming categorical variables into numerical values, ensuring compatibility with statistical analyses while maintaining logical relationships and interpretability. This numerical transformation is specifically essential for developing the correlation matrix, as it requires all variables to be in numeric format to analyze their relationships effectively.
+
+The presence of potential missing values in the transformed dataset is checked and visualized to confirm data integrity and ensure no issues have been introduced during the conversion process.
 
 ```{r, message=FAlSE, warning=FALSE}
 
@@ -331,13 +333,7 @@ To explore relationships among variables and their association with obesity leve
 
 ```{r}
 #Assuming dataset_num is already defined and contains the relevant columns
-cor_matrix <- cor(dataset_num %>%
-                    select("physical_act", "freq_alcohol", "obesity_lev", "age",
-                           "weight","height", "family_hist", "caloric_food",
-                           "vegetable_food", "food_btw_meals", "use_tech", "ch2o",
-                           "m_trans", "smoke","nb_meal_day", "calorie_check",
-                           "gender"),
-                  use = "complete.obs")
+cor_matrix <- cor(dataset_num %>% select("physical_act", "freq_alcohol", "obesity_lev", "age", "weight","height", "family_hist", "caloric_food", "vegetable_food", "food_btw_meals", "use_tech", "ch2o", "m_trans", "smoke","nb_meal_day", "calorie_check", "gender"),use = "complete.obs")
 
 #Extract the correlations with 'obesity_lev'
 cor_with_obesity_lev <- cor_matrix["obesity_lev",]
@@ -351,34 +347,24 @@ cor_matrix_ordered <- cor_matrix[ordered_vars, ordered_vars]
 #Melt the ordered correlation matrix into long format
 cor_long <- melt(cor_matrix_ordered)
 
-g3 <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
-  geom_tile() +
-  geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5
-            , hjust = 0.5) + # Center text within tiles
+g3 <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) + 
+    geom_tile() + 
+    geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5, hjust = 0.5) +
     scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  
-  labs(title = "Correlation Heatmap Ordered by Obesity Level", x = "Variables", y
+    labs(title = "Correlation Heatmap Ordered by Obesity Level", x = "Variables", y
        = "Variables") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        # Rotate x-axis labels for readability
-        axis.text.y = element_text(angle = 45, vjust = 1) 
-        # Rotate y-axis labels for readability
-  )
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.text.y = element_text(angle = 45, vjust = 1))
+
 plot3 <- ggplotly(g3)
 plot3
 # Create the heatmap with correlation values
 
 # Assuming dataset_num is already defined and contains the relevant columns
-cor_matrix <- cor(dataset_num %>%
-                    select("physical_act", "freq_alcohol", "obesity_lev", "age",
-                           "weight", "family_hist", "caloric_food",
-                           "vegetable_food", "food_btw_meals",
-                           "use_tech","ch2o", "height",
-                           "calorie_check", "gender"),
-                  use = "complete.obs")
+cor_matrix <- cor(dataset_num %>% select("physical_act", "freq_alcohol", "obesity_lev", "age", "weight", "family_hist", "caloric_food", "vegetable_food", "food_btw_meals", "use_tech","ch2o", "height", "calorie_check", "gender"), use = "complete.obs")
 
-# Extract the correlations with 'obesity_lev'
+# Extract the correlations with "obesity_lev"
 cor_with_obesity_lev <- cor_matrix["obesity_lev",]
 
 # Order variables by their correlation with 'obesity_lev'
@@ -390,7 +376,6 @@ cor_matrix_ordered <- cor_matrix[ordered_vars, ordered_vars]
 # Melt the ordered correlation matrix into long format
 cor_long <- melt(cor_matrix_ordered)
 
-
 g4 <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
   geom_tile() +
   geom_text(aes(label = round(value, 2)), color = "black", size = 2.5, vjust = 0.5
@@ -400,9 +385,7 @@ g4 <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
        = "Variables") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        # Rotate x-axis labels for readability
         axis.text.y = element_text(angle = 45, vjust = 1) 
-        # Rotate y-axis labels for readability
   )
 plot4 <- ggplotly(g4)
 plot4
