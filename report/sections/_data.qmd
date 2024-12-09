@@ -4,24 +4,21 @@
 
 The dataset utilized in this project was obtained from the UCI Machine Learning Repository, a reputable and extensively used platform for data science and machine learning projects. Originally compiled by researchers at the Universidad de la Costa, Colombia, the dataset combines 77% synthetically generated data with 23% real-world data collected through a structured online survey. The synthetic data, created using the Synthetic Minority Over-sampling Technique (SMOTE) in Weka, addresses class imbalance, enhancing the dataset's suitability for machine learning tasks. The real-world data, gathered from 498 participants over a 30-day period, captures detailed self-reported information on dietary habits, physical activity levels, and demographic characteristics. While synthetic data introduces uniformity and balance, it inherently lacks the complexity of real-world variability, and the user-collected data, though authentic, is susceptible to self-reporting biases and sampling limitations. These characteristics, along with the dataset’s diverse origins, make it an invaluable resource for simulating real-world challenges in healthcare analytics.
 
+## Description
+
+The dataset consists of 2111 records and 17 attributes, offering a detailed examination of the factors contributing to obesity. The attributes represent a mix of categorical and continuous variables, providing insights into demographic, lifestyle, and behavioral factors. In greater detail, an interactive table was designed to provide a comprehensive summary of the dataset's variables.
+
 ```{r}
 library(here)
 library(knitr)
+# Main features of the dataset
 dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
 head(dataset_raw) %>%
   kbl(format = "html", caption = "First 6 Rows of the Initial Dataset") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
   scroll_box(width = "100%", height = "400px")
-```
 
-## Description
-
-The dataset consists of 2111 records and 17 attributes, offering a detailed examination of the factors contributing to obesity. The attributes represent a mix of categorical and continuous variables, providing insights into demographic, lifestyle, and behavioral factors.
-
-The variables include:
-
-```{r}
 desc_table <- tibble(
   Name = colnames(dataset_raw),
   Type = sapply(dataset_raw, class),
@@ -35,7 +32,7 @@ desc_table %>%
   scroll_box(width = "100%", height = "500px")
 ```
 
-The dataset has been pre-processed, with normalization applied to continuous variables and categorical data encoded. SMOTE was used to address class imbalance, but care was taken to minimize artificial patterns. Despite the presence of synthetic data (77%), which ensures balance and diversity, and real-world data (23%), which introduces authenticity, the dataset's combined structure allows for a comprehensive analysis of obesity-related factors while acknowledging potential biases like self-report inaccuracies.
+The dataset underwent a thorough preprocessing phase, including normalization of continuous variables, encoding of categorical data, and removal of missing or atypical entries to ensure high-quality analysis. Class imbalance was addressed using the SMOTE (Synthetic Minority Oversampling Technique), generating synthetic data while carefully avoiding noise or artificial patterns. The final dataset comprises 77% synthetic data, which enhances balance and diversity, and 23% real-world data, adding authenticity. This combination allows for a comprehensive analysis of obesity-related factors, while recognizing potential biases, such as inaccuracies in self-reported information.
 
 ## Wrangling
 
