@@ -404,7 +404,7 @@ Plot histogram and density.
 ```{r}
 g23 <- ggplot(dataset, aes(x = physical_act)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", color = "black", alpha = 0.6) +
-  geom_density(color = "darkblue", size = 1) +
+  geom_density(color = "darkblue", linewidth = 1) +
   ggtitle("Histogram and Density of Physical Activity") +
   theme_minimal() +
   labs(x = "Physical Activity", y = "Density")
@@ -499,6 +499,4 @@ This density plot provides a perspective on the use of technology across differe
 
 The peak indicates a strong clustering of individuals in Obesity Type III who report moderate use of technology, which may reflect consistent engagement with technology-based activities such as sedentary work, entertainment, or even health-monitoring applications. In contrast, other obesity categories, such as Obesity Type II and Overweight Level II, exhibit more balanced distributions without a single dominant peak, hinting at more varied technology usage patterns.
 
-This observation raises interesting questions about the role of technology in shaping lifestyle behaviors in Obesity Type III individuals. It may point to a reliance on technology that correlates with a sedentary lifestyle, a known risk factor for obesity. Alternatively, it could reflect targeted interventions or habits specific to this group. 
-
-
+This observation raises interesting questions about the role of technology in shaping lifestyle behaviors in Obesity Type III individuals. It may point to a reliance on technology that correlates with a sedentary lifestyle, a known risk factor for obesity. Alternatively, it could reflect targeted interventions or habits specific to this group.
