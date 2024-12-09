@@ -1,21 +1,19 @@
-# 3. Exploratory Data Analysis (EDA)
+# Exploratory Data Analysis (EDA)
 
-#### 3.1 Descriptive statistics and distribution analysis
+#### Descriptive statistics and distribution analysis
 
 ##### Age
 
-Descriptive statistic for Age
+Descriptive statistics for Age
 
 ```{r}
-# this is what was written before in case you don't like the new output 
-#summary(dataset$age)
-# sd(dataset$age, na.rm = TRUE)
+age_summary <- summary(dataset$age)
+age_sd <- sd(dataset$age, na.rm = TRUE)
 sum_age_df <- tibble::tibble(
-  Metric = c(names(summary(dataset$age)), "Std. Dev"),
-  Value = c(summary(dataset$age), sd(dataset$age, na.rm = TRUE))
+  Metric = c(names(age_summary), "Standard Deviation"),
+  Value = round(c(age_summary, age_sd), 2)
 )
-kable(sum_age_df, format = "markdown", caption = "Summary of the age variable")
-
+kable(sum_age_df, format = "markdown", caption = "Age Variable Statistics")
 ```
 
 Age distribution
@@ -453,7 +451,7 @@ This histogram and density plot of daily water consumption (CH2O) shows a clear 
 
 Violin Plot by Gender.
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE}
 # Scatterplot with a LOESS trend line
 g26 <- ggplot(dataset, aes(x = weight, y = ch2o, color = obesity_lev)) +
     geom_point(alpha = 0.6) +
