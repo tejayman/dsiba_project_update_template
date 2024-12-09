@@ -101,14 +101,11 @@ The plot shows for height, relatively low variability within each category, with
 Descriptive statistic for Weight.
 
 ```{r}
-# summary(dataset$weight)
-# sd(dataset$weight, na.rm = TRUE)
-
 sum_weight_df <- tibble::tibble(
   Metric = c(names(summary(dataset$weight)), "Std. Dev"),
-  Value = c(summary(dataset$weight), sd(dataset$weight, na.rm = TRUE))
+  Value = round(c(summary(dataset$weight), sd(dataset$weight, na.rm = TRUE)), 2)
 )
-kable(sum_weight_df, format = "markdown", caption = "Summary of the weight variable")
+kable(sum_weight_df, format = "markdown", caption = "Weight Variable Statistics")
 ```
 
 Weight by gender
