@@ -36,9 +36,9 @@ The dataset underwent a thorough preprocessing phase, including normalization of
 
 ## Wrangling
 
-To begin the wrangling process, we load the essential libraries required for data manipulation, visualization, and clustering. Each package is selected for its specific functionality, enabling efficient and streamlined analysis:
+To initiate the wrangling process, essential libraries for data manipulation, visualization, and clustering are loaded. Each package is utilized for its specific functionality, facilitating efficient and streamlined analysis:
 
--   dplyr: for manipulation;
+-   dplyr: for data manipulation (e.g., filtering, summarizing);
 
 -   tidyr: for data tidying (e.g., reshaping);
 
@@ -62,7 +62,7 @@ library(cluster)
 library(reshape2)
 ```
 
-We rename columns for clarity and ease of use in the analysis. The new names are shorter and more intuitive while preserving their original meaning.
+Column names are renamed to enhance clarity and improve usability during the analysis. The updated names are designed to be shorter and more intuitive, ensuring ease of reference while retaining their original meaning and context. This adjustment simplifies code readability and helps streamline data manipulation tasks, particularly in complex analytical workflows.
 
 ```{r}
   dataset <- dataset_raw %>%
@@ -87,7 +87,9 @@ We rename columns for clarity and ease of use in the analysis. The new names are
   )
 ```
 
-Check for missing values in the dataset, missing values are identified by counting NA values for each column.
+**Check for missing values**
+
+To ensure data integrity, missing values in the dataset are examined by counting "NA" values in each column, providing a clear view of dataset completeness. The results are presented in a formatted table for easy interpretation, with styling applied for readability and a scrollable box to handle larger datasets. This process facilitates prompt handling of missing data through appropriate strategies.
 
 ```{r}
 missing_values <- colSums(is.na(dataset))
@@ -100,27 +102,22 @@ missing_values %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
-Missing values are identified by counting NA values for each column. All columns contain complete data, with no missing values. If missing data were present, we could address it by either removing rows with missing values using dataset \<- na.omit(dataset_row) or imputing missing values with appropriate measures (e.g. mean or median).
+The analysis confirms that all columns contain complete data, with no missing values identified. This completeness ensures a robust foundation for subsequent analysis, eliminating the need for immediate data cleaning related to missing entries.
 
-Check the structure of the dataset to identify data types for each variable. This helps in identifying columns that need to be converted or standardized.
+**Check for dataset structure**
+
+The structure of the dataset is examined to identify the data types of each variable, providing critical insights for subsequent data preparation. Understanding the data types helps pinpoint columns requiring transformations, such as converting categorical variables to factors or standardizing numeric variables for analysis.
 
 ```{r}
-# Capture the structure of the dataset
 str_output <- capture.output(str(dataset))
-# Convert the structure output to a data frame
 str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
 str_table %>%
-  kbl(format = "html", caption = "Structure of the Dataset") %>%
+  kbl(format = "html", caption = "Original structure of the Dataset") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
   scroll_box(width = "100%", height = "400px")
-```
 
-We convert specific columns to factors for categorical interpretation during analysis. Factors ensure proper handling of discrete variables in statistical modeling.
 
-We arranged the levels of the obesity categories, food consumption between meals, and the frequency of alcohol use to follow a logical ordinal progression, ensuring these variables accurately reflect increasing severity or frequency for improved interpretability and analysis.
-
-```{r}
 dataset <- dataset %>%
   mutate(
     gender = as.factor(gender),
@@ -140,11 +137,8 @@ dataset <- dataset %>%
     freq_alcohol = factor(ifelse(freq_alcohol == "no", "No", freq_alcohol), 
                           levels = c("No", "Sometimes", "Frequently", "Always"), 
                           ordered = TRUE))
-```
 
-Using str() before and after confirms that each variable has the correct data type, preventing errors during analysis.
 
-```{r}
 str_output <- capture.output(str(dataset))
 str_table <- data.frame(Structure = str_output, stringsAsFactors = FALSE)
 str_table %>%
@@ -152,10 +146,15 @@ str_table %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
   scroll_box(width = "100%", height = "400px")
-
 ```
 
-Check for duplicated rows in the dataset.
+The transformations ensured the dataset was ready for analysis by restructuring categorical and ordinal variables to meet modeling requirements. Converting categorical variables into factors standardized their representation, reducing ambiguity and improving compatibility with statistical models. For ordinal variables, levels were explicitly ordered to preserve their logical progression and enhance interpretability, allowing for meaningful comparisons across categories.
+
+The updated structure was reviewed to confirm the accuracy of these adjustments, providing confidence in the preprocessing steps. While further transformations like normalization were not applied, the focus on categorical and ordinal adjustments established a strong foundation for reliable and interpretable analysis. In particular, the levels of obesity categories, food consumption between meals, and frequency of alcohol use were arranged to reflect increasing severity or frequency, ensuring these variables captured their intended relationships and supported clear, accurate insights into the data.
+
+**Check for duplicates**
+
+The dataset is examined for duplicated rows to ensure data integrity and eliminate redundancy. Identifying and addressing duplicates is a crucial step in data preprocessing, as redundant entries can skew analysis results and lead to misleading conclusions. This process involves systematically scanning the dataset for identical rows and quantifying their occurrence.
 
 ```{r}
 duplicated_rows <- sum(duplicated(dataset))
@@ -167,14 +166,14 @@ Keep only one instance of each duplicated row.
 ```{r}
 dataset <- dataset %>%
 distinct()
+
+nrow(dataset)
+any(duplicated(dataset))
 ```
 
 Check the number of rows after removing duplicates.
 
-```{r}
-nrow(dataset)
-any(duplicated(dataset))
-```
+**SMOTE's analysis**
 
 In-depth analysis of SMOTE's impact and visualization of class Distribution
 
