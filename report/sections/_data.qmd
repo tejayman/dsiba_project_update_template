@@ -36,7 +36,7 @@ The dataset underwent a thorough preprocessing phase, including normalization of
 
 ## Wrangling
 
-To initiate the wrangling process, essential libraries for data manipulation, visualization, and clustering are loaded. Each package is utilized for its specific functionality, facilitating efficient and streamlined analysis:
+Essential libraries for data manipulation, visualization, and clustering are loaded to begin the wrangling process and support subsequent analysis. Each package is utilized for its specific functionality, facilitating efficient and streamlined analysis:
 
 -   dplyr: for data manipulation (e.g., filtering, summarizing);
 
@@ -87,25 +87,6 @@ Column names are renamed to enhance clarity and improve usability during the ana
   )
 ```
 
-**Check for missing values**
-
-To ensure data integrity, missing values in the dataset are examined by counting "NA" values in each column, providing a clear view of dataset completeness. The results are presented in a formatted table for easy interpretation, with styling applied for readability and a scrollable box to handle larger datasets. This process facilitates prompt handling of missing data through appropriate strategies.
-
-```{r}
-missing_values <- colSums(is.na(dataset))
-missing_values %>%
-  kbl(format = "html", caption = "Missing Values in Each Column") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "center") %>%
-  column_spec(1, width = "100px") %>%
-  column_spec(2, width = "80px") %>%
-  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
-  scroll_box(width = "100%", height = "400px")
-```
-
-The analysis confirms that all columns contain complete data, with no missing values identified. This completeness ensures a robust foundation for subsequent analysis, eliminating the need for immediate data cleaning related to missing entries.
-
-**Check for dataset structure**
-
 The structure of the dataset is examined to identify the data types of each variable, providing critical insights for subsequent data preparation. Understanding the data types helps pinpoint columns requiring transformations, such as converting categorical variables to factors or standardizing numeric variables for analysis.
 
 ```{r}
@@ -152,104 +133,7 @@ The transformations ensured the dataset was ready for analysis by restructuring 
 
 The updated structure was reviewed to confirm the accuracy of these adjustments, providing confidence in the preprocessing steps. While further transformations like normalization were not applied, the focus on categorical and ordinal adjustments established a strong foundation for reliable and interpretable analysis. In particular, the levels of obesity categories, food consumption between meals, and frequency of alcohol use were arranged to reflect increasing severity or frequency, ensuring these variables captured their intended relationships and supported clear, accurate insights into the data.
 
-**Check for duplicates**
-
-The dataset is examined for duplicated rows to ensure data integrity and eliminate redundancy. Identifying and addressing duplicates is a crucial step in data preprocessing, as redundant entries can skew analysis results and lead to misleading conclusions. This process involves systematically scanning the dataset for identical rows and quantifying their occurrence.
-
-```{r}
-duplicated_rows <- sum(duplicated(dataset))
-duplicated_rows
-```
-
-Keep only one instance of each duplicated row.
-
-```{r}
-dataset <- dataset %>%
-distinct()
-
-nrow(dataset)
-any(duplicated(dataset))
-```
-
-Check the number of rows after removing duplicates.
-
-**SMOTE's analysis**
-
-In-depth analysis of SMOTE's impact and visualization of class Distribution
-
-```{r}
-library(ggplot2)
-g1 <- ggplot(dataset, aes(x = obesity_lev)) +
-  geom_bar(fill = "skyblue", color = "black") +
-  theme_minimal() +
-  labs(
-    title = "Class Distribution of Obesity Levels",
-    x = "Obesity Level",
-    y = "Count"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) #Adjusted the text for clarity
-
-plotly_plot <- ggplotly(g1)
-plotly_plot
-```
-
-After applying SMOTE, the distribution is noticeably more balanced across all categories, with each class showing a similar count. This outcome reflects SMOTE's intended effect of addressing class imbalance.
-
-Distribution analysis
-
-Density plot for age.
-
-```{r}
-g2 <- ggplot(dataset, aes(x = age, fill = obesity_lev)) +
-  geom_density(alpha = 0.5) +
-  theme_minimal() +
-    labs(
-    title = "Age Distribution by Obesity Levels",
-    x = "Age",
-    y = "Density",
-    fill = "Obesity Level")
-plotly_plot1 <- ggplotly(g2)
-plotly_plot1
-```
-
-This graph allows us to assess the age distribution across obesity levels and to evaluate the impact of the SMOTE algorithm in generating synthetic data. Two key takeaways emerge: first, the distributions show a clear separation between obesity categories, particularly with younger ages dominating in lower obesity levels (e.g., Insufficient Weight and Normal Weight) and older ages appearing more prominently in higher obesity levels (e.g., Obesity Type II and III). Second, sharp peaks, such as the one around age 30 in "Obesity Type I," could signal potential artifacts from data synthesis. While these patterns indicate that the dataset maintains logical trends, further validation is necessary to confirm that these separations and peaks reflect realistic population characteristics and not artificial biases introduced during data augmentation. Overall, the dataset appears well-structured, but these observations warrant careful consideration during analysis.
-
-Summary statistics by obesity level.
-
-```{r}
-dataset_stat <- dataset %>%
-  group_by(obesity_lev) %>%
-  summarize(
-    Age_Mean = mean(age, na.rm = TRUE),
-    Age_SD = sd(age, na.rm = TRUE),
-    Height_Mean = mean(height, na.rm = TRUE),
-    Height_SD = sd(height, na.rm = TRUE),
-    Weight_Mean = mean(weight, na.rm = TRUE),
-    Weight_SD = sd(weight, na.rm = TRUE)
-  )
-dataset_stat %>%
-  kbl(format = "html", caption = "Summary Statistics by Obesity Level", digits = 1) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
-  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
-  scroll_box(width = "100%", height = "400px")
-```
-
-The summary statistics show relatively consistent means and standard deviations for Age, Height, and Weight across obesity levels, which suggests that SMOTE has preserved the overall distribution without introducing extreme values. Interpretation: Since the means and standard deviations are similar across classes, it appears SMOTE didn’t drastically alter the dataset's variability. This consistency supports the idea that SMOTE effectively balanced the classes without distorting key variable distributions.
-
-Perform K-means clustering and calculate silhouette score.
-
-```{r}
-library(cluster)
-set.seed(123)
-kmeans_res <- kmeans(select(dataset, where(is.numeric)), centers = length(unique(dataset$obesity_lev)))
-silhouette_score <- silhouette(kmeans_res$cluster, dist(select(dataset, where(is.numeric))))
-mean_silhouette_score <- mean(silhouette_score[, "sil_width"])
-mean_silhouette_score
-```
-
-Silhouette Score from K-means Clustering: The mean silhouette score of approximately 0.456 suggests a moderate level of cohesion within clusters and some separation between them. This score indicates that the clusters (representing obesity levels) are neither too distinct nor too blended. Interpretation: A score close to 0.5 generally reflects reasonable class separability without excessive artificial separability. This score suggests that SMOTE has helped create distinguishable but not overly isolated clusters, which is desirable for class balance. We conclude that SMOTE has balanced the dataset without drastically distorting it.
-
-Creating a Numerical Dataset "dataset_num".
+Now, a numerical version of the dataset, called "dataset_num", is created by transforming categorical variables into numerical values, ensuring compatibility with machine learning algorithms and statistical analyses while maintaining logical relationships and interpretability. Additionally, the presence of potential missing values in the transformed dataset is checked and visualized to confirm data integrity and ensure no issues have been introduced during the conversion process.
 
 ```{r, message=FAlSE, warning=FALSE}
 
@@ -308,13 +192,8 @@ table_num_str %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
   scroll_box(width = "100%", height = "400px")
-```
 
-### Spotting Mistakes and Missing Data
 
-We verified the presence of any potential NA values that might have arisen during the conversion of categorical variables to numeric format.
-
-```{r}
 nb_na<- colSums(is.na(dataset_num))
 nb_na %>%
   kbl(format = "html", caption = "Presence of Potential NA Values in the Dataset") %>%
@@ -329,15 +208,126 @@ nb_na %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
-The results of the test confirmed that there are no NA values in the dataset, indicating that all variables were successfully converted to numeric format while retaining their integrity.
+The test results confirmed the absence of any NA values in the dataset, indicating that all variables were successfully converted to numeric format without compromising data integrity.
 
-### Listing Anomalies and Outliers
+## Spotting Mistakes and Missing Data
+
+**Check for missing values**
+
+To ensure data integrity, missing values in the dataset are examined by counting "NA" values in each column, providing a clear view of dataset completeness. The results are presented in a formatted table for easy interpretation, with styling applied for readability and a scrollable box to handle larger datasets. This process facilitates prompt handling of missing data through appropriate strategies.
+
+```{r}
+missing_values <- colSums(is.na(dataset))
+missing_values %>%
+  kbl(format = "html", caption = "Missing Values in Each Column") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "center") %>%
+  column_spec(1, width = "100px") %>%
+  column_spec(2, width = "80px") %>%
+  row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+The analysis confirms that all columns contain complete data, with no missing values identified. This completeness ensures a robust foundation for subsequent analysis, eliminating the need for immediate data cleaning related to missing entries.
+
+**Check for duplicates**
+
+The dataset is examined for duplicated rows to ensure data integrity and eliminate redundancy. Identifying and addressing duplicates is a crucial step in data preprocessing, as redundant entries can skew analysis results and lead to misleading conclusions. This process involves systematically scanning the dataset for identical rows and quantifying their occurrence.
+
+```{r}
+duplicated_rows <- sum(duplicated(dataset))
+duplicated_rows
+```
+
+The detection of 24 duplicated rows in the dataset highlights the need for further preprocessing to ensure data integrity, as these redundant entries could skew analysis if not properly handled.
+
+```{r}
+dataset <- dataset %>%
+distinct()
+
+nrow(dataset)
+any(duplicated(dataset))
+```
+
+The dataset was refined by removing duplicate entries to ensure that only unique rows are retained. A verification step confirmed that no duplicates remain, ensuring the dataset's integrity and reliability for further analysis.
+
+## Listing Anomalies and Outliers
+
+A bar chart was created to visualize the distribution of obesity levels, providing a clear overview of class frequencies within the dataset. Particular attention is given to obesity levels, as this variable serves as the dependent variable in the predictive model to be developed later.
+
+```{r}
+g1 <- ggplot(dataset, aes(x = obesity_lev)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Class Distribution of Obesity Levels",
+    x = "Obesity Level",
+    y = "Count"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) #Adjusted the text for clarity
+
+plotly_plot <- ggplotly(g1)
+plotly_plot
+```
+
+The chart highlights a balanced distribution across all obesity levels, demonstrating the effectiveness of SMOTE in addressing class imbalance. By equalizing the representation of each category, the dataset becomes more reliable for analysis, reducing biases and ensuring a fair evaluation of patterns within the data. On the other hand, the synthetic data introduced by SMOTE may not fully reflect real-world variability, potentially leading to artificial patterns that could affect the interpretability of results.
+
+A density plot was generated to visualize the age distribution across different obesity levels, providing insights into patterns and trends within the data.
+
+```{r}
+g2 <- ggplot(dataset, aes(x = age, fill = obesity_lev)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+    labs(
+    title = "Age Distribution by Obesity Levels",
+    x = "Age",
+    y = "Density",
+    fill = "Obesity Level")
+plotly_plot1 <- ggplotly(g2)
+plotly_plot1
+```
+
+This graph provides a detailed view of the age distribution across obesity levels and offers insight into the impact of the SMOTE algorithm in balancing the dataset. The distributions show distinct separation among obesity categories, with younger ages predominantly associated with lower obesity levels (e.g., Insufficient Weight and Normal Weight), while older ages are more prevalent in higher obesity categories (e.g., Obesity Type II and III).
+
+Notably, sharp peaks in the density curves, such as the one around age 30 in "Obesity Type I," could indicate potential artifacts introduced during the synthetic data generation process. While these patterns align with logical demographic trends, they highlight the need for further validation to ensure that such separations and peaks represent realistic population characteristics rather than biases from data augmentation. Overall, the dataset reflects clear and interpretable patterns, but these observations suggest the importance of cautious interpretation and robust validation in subsequent analyses.
+
+Summary statistics were computed for key variables across obesity levels to identify potential anomalies or patterns, providing a clearer understanding of how age, height, and weight vary within each category.
+
+```{r}
+dataset_stat <- dataset %>%
+  group_by(obesity_lev) %>%
+  summarize(
+    Age_Mean = mean(age, na.rm = TRUE),
+    Age_SD = sd(age, na.rm = TRUE),
+    Height_Mean = mean(height, na.rm = TRUE),
+    Height_SD = sd(height, na.rm = TRUE),
+    Weight_Mean = mean(weight, na.rm = TRUE),
+    Weight_SD = sd(weight, na.rm = TRUE)
+  )
+dataset_stat %>%
+  kbl(format = "html", caption = "Summary Statistics by Obesity Level", digits = 1) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+The summary statistics reveal distinct differences across obesity levels. As expected, weight increases progressively with higher obesity categories, accompanied by slightly larger variations in standard deviation. Interestingly, height remains relatively constant across categories, suggesting it plays a limited role in distinguishing obesity levels. The age distribution shows a notable shift, with younger individuals dominating the lower obesity levels and a broader age range in higher levels, highlighting potential demographic patterns worth further exploration. These insights confirm the logical trends in the dataset, providing confidence in its structure while emphasizing the need for further analysis of these relationships.
+
+Clustering was performed using k-means to explore the dataset's structure and assess the coherence of the groups, with the silhouette score calculated to evaluate the quality and separation of the clusters.
+
+```{r}
+library(cluster)
+set.seed(123)
+kmeans_res <- kmeans(select(dataset, where(is.numeric)), centers = length(unique(dataset$obesity_lev)))
+silhouette_score <- silhouette(kmeans_res$cluster, dist(select(dataset, where(is.numeric))))
+mean_silhouette_score <- mean(silhouette_score[, "sil_width"])
+mean_silhouette_score
+```
+
+The mean silhouette score of approximately 0.456 indicates moderate cohesion within clusters and reasonable separation between them. This suggests that the clusters, representing different obesity levels, are distinguishable but not excessively isolated. The result reflects a balance between natural class separability and the effects of data augmentation with SMOTE, which appears to have effectively balanced the dataset without introducing significant distortions. These findings provide confidence in the dataset’s suitability for clustering-based exploration while highlighting the importance of further validation to ensure the robustness of the observed patterns.
 
 ## Correlation Analysis
 
-In order to select the possible factor influencing obesity level.
-
-We computed a correlation matrix to analyze the relationships between numeric variables, focusing on their associations with obesity_lev. Variables were reordered by the strength of their correlation with obesity_lev for clarity. A heatmap was generated using a diverging color gradient to visualize these correlations, with red indicating strong positive relationships, blue for negative, and white for weak or neutral. Numerical labels and rotated axis labels were added to improve interpretability, highlighting key factors linked to obesity levels.
+To explore relationships among variables and their association with obesity levels, a correlation matrix was computed. The analysis focuses on identifying the strength and direction of correlations between "obesity_lev" (the dependent variable) and other predictors, such as physical activity, frequency of alcohol consumption, and dietary habits. By ordering variables based on their correlation with "obesity_lev", the matrix highlights the most influential factors in determining obesity levels. A heatmap visualization was then created to provide an intuitive representation of these relationships, with a gradient color scale indicating the strength of positive and negative correlations. This approach facilitates the identification of key variables for further analysis and modeling.
 
 ```{r}
 #Assuming dataset_num is already defined and contains the relevant columns
@@ -417,3 +407,7 @@ g4 <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = value)) +
 plot4 <- ggplotly(g4)
 plot4
 ```
+
+The correlation matrices provide valuable insights into the relationships between variables and their association with obesity levels. As expected, weight exhibits a very strong positive correlation with obesity level, reinforcing its central role in defining the target variable. Family history of obesity and caloric food consumption also show moderate positive correlations, highlighting their relevance as predictive factors.
+
+Conversely, variables such as physical activity and food consumption between meals exhibit weak or negative correlations, suggesting that their influence on obesity levels is less pronounced. These patterns align with logical trends but also underscore the need for careful consideration of multicollinearity and the relative importance of variables in predictive modeling. The heatmap's clear organization of variables by their correlation strength aids in identifying the most impactful factors for further analysis. Overall, the results confirm that the dataset's structure supports a robust examination of the factors influencing obesity.
