@@ -206,7 +206,7 @@ class_metrics_vertical %>%
 
 ```{r, message=FALSE}
 # Compute ROC curve using the actual class labels and predicted probabilities
-
+roc_curve <- pROC::roc(model_data$Obesity, predicted_probs)
 auc_value <- pROC::auc(roc_curve)
 print(auc_value)
 ```
