@@ -29,13 +29,31 @@ Regression analysis helps us understand how predictors influence outcomes, with 
 To align with the requirements of a logistic regression model, it was necessary to modify the dataset's target variable. The original variable, obesity level, was a multi-class categorical variable representing varying degrees of obesity and non-obesity. Since logistic regression is designed for binary classification, the target variable was converted into a binary format. Individuals with a BMI ≥ 30 were classified as obese (1), while others were classified as non-obese (0). This transformation ensured compatibility with the logistic regression framework. Following this adjustment, the target variable was converted into a factor, and the dataset was reviewed for consistency and readiness for analysis.
 
 ```{r}
-dataset_raw$BMI <- dataset_raw$Weight / (dataset_raw$Height^2)
-head(dataset_raw$BMI)
-summary(dataset_raw$BMI)
-dataset_raw$Obesity <- ifelse(dataset_raw$BMI >= 30, 1, 0)
-dataset_raw$Obesity <- as.factor(dataset_raw$Obesity)
-table(dataset_raw$Obesity)
-head(dataset_raw)
+dataset <- read.csv(here("data/processed/dataset.csv"))
+dataset$BMI <- dataset$weight / (dataset$height^2)
+head(dataset$BMI) %>%
+  tibble::enframe(name = "Row", value = "BMI") %>%
+  kable(format = "html", caption = "First 6 BMI Values") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5")
+summary_BMI <- summary(dataset$BMI)
+summary_BMI %>%
+  tibble::enframe(name = "Statistic", value = "Value") %>%
+  kable(format = "html", caption = "Summary Statistics for BMI") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5")
+dataset$Obesity <- ifelse(dataset$BMI >= 30, 1, 0)
+dataset$Obesity <- as.factor(dataset$Obesity)
+table(dataset$Obesity) %>%
+  as.data.frame() %>%
+  kable(format = "html", caption = "Frequency: obesity categories") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5")
+head(dataset) %>%
+  kable(format = "html", caption = "First 6 Rows of Updated Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
 ```
 
 Twelve predictors associated with obesity-related behaviors, dietary habits, physical activity, and lifestyle factors were selected for analysis. These variables, along with the binary target variable Obesity (1 = obese, 0 = not obese), formed the dataset for logistic regression modeling. The dataset was reviewed to ensure correct structure and readiness for analysis.
