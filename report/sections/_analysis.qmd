@@ -12,7 +12,7 @@ The modeling process is structured to address the two key research questions:
 
 ### Logistic Regression Model
 
-To accurately address the key research questions, a logistic regression model will be employed to estimate the probability of individuals belonging to a categorie: *obese* or *not obese*. Weight and height will be excluded as predictors in the model because they are directly used to calculate BMI, which serves as the basis for the obesity levels categorized in the dataset. Including these variables would create a dependency between the predictors and the target variable, potentially biasing the analysis. By excluding weight and height, the focus shifts to behavioral and lifestyle factors, such as dietary habits, physical activity, and demographic characteristics, to better understand their influence on obesity risk.
+To accurately address the key research questions, a logistic regression model will be employed to estimate the probability of individuals belonging to a category: *obese* or *not obese*. Weight and height will be excluded as predictors in the model because they are directly used to calculate BMI, which serves as the basis for the obesity levels categorized in the dataset. Including these variables would create a dependency between the predictors and the target variable, potentially biasing the analysis. By excluding weight and height, the focus shifts to behavioral and lifestyle factors, such as dietary habits, physical activity, and demographic characteristics, to better understand their influence on obesity risk.
 
 While logistic regression provides a clear and interpretable framework for estimating probabilities, it inherently limits the analysis to a binary classification. This restriction prevents the exploration of the full spectrum of obesity levels, such as Obesity Type I, II, or III, as classified in the dataset. Despite this limitation, logistic regression is a robust method for quantifying the relationships between independent variables and the binary outcome. Feature selection techniques will ensure that only the most relevant predictors are retained, and the model's performance will be rigorously evaluated using metrics such as accuracy, precision, recall, F1-score, and ROC-AUC, ensuring reliable and actionable insights.
 
@@ -22,7 +22,7 @@ Regression analysis helps us understand how predictors influence outcomes, with 
 
 ## Objectives of the Selected Method
 
-### **Logistic Regression Model Development**
+### Logistic Regression Model Development
 
 **Data Loading and Processing**
 

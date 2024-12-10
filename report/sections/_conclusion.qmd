@@ -1,14 +1,11 @@
 
-### 5. Conclusion
+### Conclusion
 
 So far, we have conducted a comprehensive exploration and preparation of our dataset, focusing on understanding the influence of lifestyle factors on obesity within a sample from Mexico, Peru, and Colombia. The dataset, which was pre-processed with SMOTE to address class imbalance, has provided us with balanced obesity categories, facilitating an in-depth analysis of key variables such as eating habits, physical activity, and alcohol consumption. Through correlation analysis, we identified the variables with the strongest associations to obesity levels, helping to guide our selection of factors for inclusion in the next modeling phase. Additionally, we have thoroughly cleaned and structured the data, renaming variables for clarity, formatting categorical variables, and removing duplicates to ensure a solid foundation for robust modeling.
 
 The next steps involve constructing regression models to analyze the relationships and predictive power of these selected factors on obesity levels. Specifically, we will develop two versions of the model—one that includes extreme values and one that excludes them—to evaluate the impact of outliers on model accuracy and stability. Key metrics such as R², P-values, and VIF will be used to confirm the reliability of the model and address potential multicollinearity issues. Following this, we will build and fine-tune a predictive model using metrics like Mean Absolute Error (MAE), Root Mean Square Error (RMSE), and R² to validate and enhance performance.
 
 These efforts will culminate in a final report that, while primarily an exercise and not applicable in real-world contexts, highlights our findings and offers insights into the most influential lifestyle factors affecting obesity. This analysis aims to provide actionable recommendations within a simulated scenario, illustrating how data-driven insights could support public health strategies focused on obesity reduction.
-
-## Next Steps
-Outline the next steps planned for completing the project, such as refining analyses, adding new methods, or addressing outstanding data issues.
 
 ## Final Thoughts
 Briefly reflect on any challenges or limitations encountered so far and how these might be addressed in the final report.
