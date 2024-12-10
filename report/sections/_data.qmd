@@ -21,8 +21,7 @@ head(dataset_raw) %>%
 
 desc_table <- tibble(
   Name = colnames(dataset_raw),
-  Type = sapply(dataset_raw, class),
-  Meaning = val_meaning
+  Type = sapply(dataset_raw, class)
 )
 desc_table %>%
   kbl(format = "html", caption = "Variable Descriptions") %>%
