@@ -14,20 +14,21 @@ library(knitr)
 # Main features of the dataset
 dataset_raw <- read.csv(here("data/raw/dataset_raw.csv"))
 head(dataset_raw) %>%
-  kbl(format = "html", caption = "First 6 Rows of the Initial Dataset") %>%
+  kbl(format = "html", caption = "First 6 Rows of the Raw Dataset") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
   scroll_box(width = "100%", height = "400px")
 
-desc_table <- tibble(
-  Name = colnames(dataset_raw),
-  Type = sapply(dataset_raw, class)
-)
+val_meaning <- c("Indicates the gender of the individual (Male/Female).", "Represents the age of participants in years.", "The height of individuals in meters.", "The weight of participants in kilograms.", "Indicates whether a family member has suffered from overweight (Yes/No).", "Indicates if participants frequently consume high-caloric foods (Yes/No).", "Scaled from 1 to 3, reflects how often vegetables are consumed (1 = Never, 3 = Always).", "Indicates the typical number of main meals consumed daily.", "Describes how often participants eat between meals (e.g., No, Sometimes, Frequently, Always).", "Indicates whether participants smoke (Yes/No).", "Scaled from 1 to 3, reflecting daily water intake (1 = Less than 1 liter, 3 = More than 2 liters).", "Whether participants monitor their calorie intake (Yes/No).", "Scaled from 0 to 4, indicating days of physical activity per week (0 = None, 4 = 4-5 days).", "Reflects daily time spent on technological devices, in hours.", "Indicates the frequency of alcohol consumption (e.g., I don't drink, Sometimes, Frequently, Always).", "Describes the primary mode of transportation (e.g., Walking, Public Transportation, Automobile).", "The target variable, classifying obesity levels into categories such as Normal Weight, Overweight (Levels I and II), and Obesity (Types I, II, III).")
+desc_table <- tibble::tibble(Name = colnames(dataset_raw), Type = sapply(dataset_raw, class), Meaning = val_meaning)
 desc_table %>%
   kbl(format = "html", caption = "Variable Descriptions") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
-  column_spec(1, bold = TRUE) %>%
+  column_spec(1, bold = TRUE, width = "200px") %>%
+  column_spec(2, width = "150px") %>%
+  column_spec(3, width = "500px") %>%
   scroll_box(width = "100%", height = "500px")
 ```
 
