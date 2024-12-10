@@ -136,7 +136,7 @@ Now, a numerical version of the dataset, called "dataset_num", is created by tra
 
 The presence of potential missing values in the transformed dataset is checked and visualized to confirm data integrity and ensure no issues have been introduced during the conversion process.
 
-```{r, message=FAlSE, warning=FALSE}
+```{r}
 
 dataset_num <- dataset %>%
   mutate(obesity_lev = recode(obesity_lev,
@@ -221,7 +221,7 @@ To ensure data integrity, missing values in the dataset are examined by counting
 missing_values <- colSums(is.na(dataset))
 missing_values %>%
   kbl(format = "html", caption = "Missing Values in Each Column") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "center") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width=FALSE, position = "center") %>%
   column_spec(1, width = "100px") %>%
   column_spec(2, width = "80px") %>%
   row_spec(0, bold = TRUE, background = "#f0f0f0") %>%
