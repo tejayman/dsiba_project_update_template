@@ -10,10 +10,6 @@ The modeling process is structured to address the two key research questions:
 
 2.  predicting whether a person will be obese based on some given combinations of factors.
 
-### Linear Regression Model
-
-A linear regression model will be developed to predict an individual’s BMI using weight and height as predictors, reflecting their foundational role in BMI calculation. As emphasized by Mendoza Palechor and De La Hoz Manotas (2019), these variables are fundamental to understanding body composition and are directly tied to the dataset's variable of obesity levels. By focusing on BMI as a continuous outcome, this approach complements categorical classifications by capturing more detailed variations in body composition across the population. The model will be evaluated using standard regression metrics, including Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R², ensuring its predictive accuracy and reliability while providing a robust foundation for public health applications.
-
 ### Logistic Regression Model
 
 To accurately address the key research questions, a logistic regression model will be employed to estimate the probability of individuals belonging to a categorie: *obese* or *not obese*. Weight and height will be excluded as predictors in the model because they are directly used to calculate BMI, which serves as the basis for the obesity levels categorized in the dataset. Including these variables would create a dependency between the predictors and the target variable, potentially biasing the analysis. By excluding weight and height, the focus shifts to behavioral and lifestyle factors, such as dietary habits, physical activity, and demographic characteristics, to better understand their influence on obesity risk.
@@ -22,9 +18,9 @@ While logistic regression provides a clear and interpretable framework for estim
 
 ### Insights and Limitations
 
-Regression analysis helps us understand how predictors influence outcomes, with logistic regression classifying individuals as obese or not obese and linear regression predicting BMI as a continuous variable. The dataset offers a mix of advantages and challenges: synthetic data ensures balanced representation but lacks the complexity of real-world patterns, while user-collected data adds variability but is prone to biases. Logistic regression simplifies the analysis by focusing on binary outcomes, leaving out the nuanced gradations of obesity, and assumes linearity, which may not fully capture complex relationships. Linear regression relies on accurate weight and height data, making it sensitive to reporting errors. Despite these limitations, the models offer insights into obesity risk and body composition, serving as a valuable exercise and foundation for future projects, even if not directly applicable to real-world scenarios.
+Regression analysis helps us understand how predictors influence outcomes, with logistic regression classifying individuals as obese or not obese. As already discussed in the previous sections, the dataset offers a mix of advantages and challenges: synthetic data ensures balanced representation but lacks the complexity of real-world patterns, while user-collected data adds variability but is prone to biases. Logistic regression simplifies the analysis by focusing on binary outcomes, leaving out the nuanced gradations of obesity, and assumes linearity, which may not fully capture complex relationships. Despite these limitations, the model offers insights into obesity risk, serving as a valuable exercise and foundation for future data explorations, even if not directly applicable to real-world scenarios.
 
-## Goals for Each Method
+## Objectives of the Selected Method
 
 ### **Linear Regression Model Development**
 
@@ -161,13 +157,6 @@ To evaluate the stepwise-selected model, predicted probabilities of obesity were
 
 ```
 
-
-
-
-
-
-
-
 ```{r}
 library(caret)
 library(pROC)
@@ -182,16 +171,17 @@ conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
 print(conf_matrix)
 
 ```
+
 ```{r}
 # Compute ROC curve using the actual class labels and predicted probabilities
 roc_curve <- pROC::roc(model_data$Obesity, predicted_probs)
 
 ```
+
 ```{r}
 auc_value <- roc_curve$auc
 cat("AUC:", round(auc_value, 3), "\n")
 ```
-
 
 Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
 
