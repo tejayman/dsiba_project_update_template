@@ -138,7 +138,6 @@ Now, a numerical version of the dataset, called "dataset_num", is created by tra
 The presence of potential missing values in the transformed dataset is checked and visualized to confirm data integrity and ensure no issues have been introduced during the conversion process.
 
 ```{r}
-
 dataset_num <- dataset %>%
   mutate(obesity_lev = recode(obesity_lev,
                               "Insufficient_Weight"=1,
