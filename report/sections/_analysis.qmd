@@ -97,8 +97,6 @@ Presented below is a comprehensive overview of the logistic regression models.
 *Full Model*
 
 ```{r}
-summary(full_model)
-
 coef_table <- coef(summary(full_model)) %>%
   as.data.frame() %>%
   tibble::rownames_to_column("Predictor")
