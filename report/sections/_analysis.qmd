@@ -207,14 +207,9 @@ class_metrics_vertical %>%
 ```{r, message=FALSE}
 # Compute ROC curve using the actual class labels and predicted probabilities
 model_data$Obesity <- factor(model_data$Obesity, levels = c(0, 1))
-roc_curve <- pROC::roc(model_data$Obesity, predicted_probs)
 
 auc_value <- pROC::auc(roc_curve)
 print(auc_value)
-
-pROC::ggroc(roc_curve) +
-  ggplot2::labs(title = "ROC Curve", x = "1 - Specificity", y = "Sensitivity") +
-  ggplot2::theme_minimal()
 ```
 
 Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
