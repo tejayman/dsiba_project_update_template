@@ -94,20 +94,6 @@ stepwise_model <- step(null_model, scope = list(lower = null_model, upper = full
 
 Presented below is a comprehensive overview of the logistic regression models.
 
-*Full Model*
-
-```{r}
-coef_table <- coef(summary(full_model)) %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column("Predictor")
-
-coef_table %>%
-  kable(format = "html", caption = "Coefficients of the Full Logistic Regression Model") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
-  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
-  scroll_box(width = "100%", height = "400px")
-```
-
 *Null Model*
 
 ```{r}
@@ -119,6 +105,20 @@ null_model_coef_table <- coef(null_model_summary) %>%
 
 null_model_coef_table %>%
   kable(format = "html", caption = "Coefficients of the Null Logistic Regression Model") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
+  row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+*Full Model*
+
+```{r}
+coef_table <- coef(summary(full_model)) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("Predictor")
+
+coef_table %>%
+  kable(format = "html", caption = "Coefficients of the Full Logistic Regression Model") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE) %>%
   row_spec(0, bold = TRUE, background = "#f5f5f5") %>%
   scroll_box(width = "100%", height = "400px")
@@ -143,14 +143,6 @@ stepwise_coef_table %>%
 **Evaluation**
 
 To evaluate the stepwise-selected model, predicted probabilities of obesity were generated for all individuals. These probabilities were converted into binary classifications using a threshold of 0.5. A confusion matrix was constructed to assess the model's performance, providing key metrics such as accuracy, sensitivity, specificity, precision, and F1-score.
-
-```{r}
-# predicted_probs <- predict(stepwise_model, type = "response")
-# predicted_classes <- ifelse(predicted_probs >= 0.5, 1, 0)
-# conf_matrix <- confusionMatrix(as.factor(predicted_classes), model_data$Obesity)
-# print(conf_matrix)
-
-```
 
 ```{r}
 library(caret)
@@ -202,14 +194,14 @@ class_metrics_vertical %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
+Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
+
 ```{r, message=FALSE}
 # Compute ROC curve using the actual class labels and predicted probabilities
 roc_curve <- pROC::roc(model_data$Obesity, predicted_probs)
 auc_value <- pROC::auc(roc_curve)
 print(auc_value)
 ```
-
-Additionally, the ROC curve and AUC were calculated to further evaluate the model’s discriminative ability. The ROC curve visualizes the trade-off between sensitivity and specificity, while the AUC quantifies the model's ability to distinguish between obese and non-obese individuals.
 
 **Results Visualization**
 
@@ -269,6 +261,22 @@ new_data <- data.frame(
                   levels = c("Public_Transportation", "Walking", "Bike", "Motorbike"))
 )
 
+predicted_probs_new <- predict(stepwise_model, new_data, type = "response")
+
+probability_table <- tibble(
+  Reference = 1:length(predicted_probs_new),
+  Predicted_Probability = predicted_probs_new,
+  Probability_Percentage = predicted_probs_new * 100
+)
+
+probability_table %>%
+  kbl(format = "html", caption = "Predicted Probabilities") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE) %>%
+  column_spec(1, width = "100px") %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+```{r}
 probability_table <- tibble(
   Reference = 1:length(predicted_probs),
   Predicted_Probability = predicted_probs,
