@@ -132,7 +132,7 @@ plot12
 
 ```
 
-Building on this analysis, the first scatter plot provides a broad overview of the positive trend between height and weight across obesity levels. While this visualization captures the general relationship, the overlapping data points obscure category-specific details, making it difficult to differentiate unique patterns within each obesity group.
+Expanding on this analysis, the first scatter plot provides a broad overview of the positive trend between height and weight across obesity levels. While this visualization captures the general relationship, the overlapping data points obscure category-specific details, making it difficult to differentiate unique patterns within each obesity group.
 
 To address this limitation, the data was refined into a facet grid that isolates each obesity category, offering a more nuanced perspective on weight-height trends. The facet grid reveals notable differences in the slopes of the relationships: higher obesity levels, such as Obesity Type II and III, display steeper slopes, suggesting a stronger height-weight correlation, while lower categories like Insufficient Weight and Normal Weight exhibit flatter slopes, indicating a weaker association. This detailed examination underscores the variability in the height-weight relationship across obesity levels, providing a clearer understanding of how these factors interact within distinct classifications.
 
@@ -141,7 +141,7 @@ correlation_height_weight <- cor(dataset$height, dataset$weight, use = "complete
 correlation_height_weight
 ```
 
-The observed correlation between height and weight (r = 0.463) aligns with findings in existing literature, confirming a moderate positive relationship and reinforcing the expectation that taller individuals generally weigh more, though the strength of this association varies slightly across obesity levels.
+The observed correlation between height and weight (r = 0.457) aligns with findings in existing literature, confirming a moderate positive relationship and reinforcing the expectation that taller individuals generally weigh more, though the strength of this association varies slightly across obesity levels.
 
 With the analysis of age, height, and weight completed, attention shifts to exploring the remaining variables in the dataset. These variables, while less directly correlated with the target outcomes, offer critical insights into behavioral, lifestyle, and environmental factors that may influence obesity levels. 
 
@@ -342,7 +342,7 @@ The trend reveals two possible key insights:
 
 To explore how physical activity varies across obesity levels, two complementary visualizations were utilized.
 
-```{r}
+```{r, warning=FALSE}
 g23 <- ggplot(dataset, aes(x = obesity_lev, y = physical_act, fill = obesity_lev)) +  
   geom_violin(trim = FALSE, alpha = 0.6) +
   geom_boxplot(width = 0.1, color = "black", fill = "white") +

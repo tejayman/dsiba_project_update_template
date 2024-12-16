@@ -32,7 +32,7 @@ desc_table %>%
   scroll_box(width = "100%", height = "500px")
 ```
 
-The dataset underwent a thorough preprocessing phase, including normalization of continuous variables, encoding of categorical data, and removal of missing or atypical entries to ensure high-quality analysis. Class imbalance was addressed using the SMOTE (Synthetic Minority Oversampling Technique), generating synthetic data while carefully avoiding noise or artificial patterns. The final dataset comprises 77% synthetic data, which enhances balance and diversity, and 23% real-world data, adding authenticity. This combination allows for a comprehensive analysis of obesity-related factors, while recognizing potential biases, such as inaccuracies in self-reported information.
+The dataset underwent a detailed preprocessing phase, including normalization of continuous variables, encoding of categorical data, and removal of missing or atypical entries to ensure high-quality analysis. Class imbalance was addressed using the SMOTE (Synthetic Minority Oversampling Technique), generating synthetic data while carefully avoiding noise or artificial patterns. The final dataset comprises 77% synthetic data, which enhances balance and diversity, and 23% real-world data, adding authenticity. This combination allows for a comprehensive analysis of obesity-related factors, while recognizing potential biases, such as inaccuracies in self-reported information.
 
 ## Wrangling
 
