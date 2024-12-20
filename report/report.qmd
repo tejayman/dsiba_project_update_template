@@ -21,23 +21,19 @@ format:
     code-overflow: wrap
     code-fold: true
     code-tools: true
-    include-in-header: # add custom css to make the text in the `</> Code` dropdown black
+    theme: 
+      light: "flatly"
+      dark: "darkly"
+    include-in-header: 
       text: |
         <style type="text/css">
           .quarto-title-banner a {
             color: #000000;
           }
         </style>
-  pdf: # use this if you want to render pdfs instead
-    include-in-header: # wrapping the code also in the pdf (otherwise, it overflows)
-      text: |
-        \usepackage{fvextra}
-        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
-          commandchars=\\\{\},
-          breaklines, breaknonspaceingroup, breakanywhere
-        }
+
 abstract: |
-  This study investigates the behavioral, dietary, and lifestyle determinants of obesity in Mexico, Peru, and Colombia, with the aim of identifying significant predictors and establishing a robust framework for obesity risk prediction. Logistic regression models were applied, converting obesity levels into a binary classification to align with the requirements of the statistical methodology. The stepwise logistic regression model, optimized using the Akaike Information Criterion (AIC), emerged as the most effective approach, retaining the predictors most strongly associated with obesity while ensuring model interpretability. The results underscore the critical influence of family history, frequent consumption of high-calorie foods, and lifestyle factors such as physical activity and transportation modes on obesity risk. The model demonstrated excellent predictive performance, achieving an overall accuracy of 75.89% and an area under the curve (AUC) of 0.856, reflecting its strong discriminative capability. Moreover, the analysis revealed nuanced patterns, including the contrasting effects of snacking frequency and the complex interplay between transportation choices and physical activity, providing a deeper understanding of the multifactorial drivers of obesity. While the model excels in specificity and offers practical utility for public health interventions, its moderate sensitivity and the exclusion of broader environmental and psychosocial variables limit its scope. Additionally, the reliance on synthetic data and a non-representative sample constrains direct real-world applicability. However, this study offers an opportunity to apply theoretical knowledge gained during the "Data Science in Business Analytics" course to a simulated scenario. By identifying patterns, correlations, and potential predictors of obesity, the research highlights the importance of data-driven approaches in addressing significant public health challenges.
+  This study investigates the behavioral, dietary, and lifestyle determinants of obesity in Mexico, Peru, and Colombia, with the aim of identifying significant predictors and establishing a robust framework for obesity risk prediction. Logistic regression models were applied, converting obesity levels into a binary classification to align with the requirements of the statistical methodology. The stepwise logistic regression model, optimized using the Akaike Information Criterion (AIC), emerged as the most effective approach, retaining the predictors most strongly associated with obesity while ensuring model interpretability. The results reinforce the critical influence of family history, frequent consumption of high-calorie foods, and lifestyle factors such as physical activity and transportation modes on obesity risk. The model demonstrated excellent predictive performance, achieving an overall accuracy of 75.89% and an area under the curve (AUC) of 0.856, reflecting its strong discriminative capability. Moreover, the analysis revealed subtle trends, including the contrasting effects of snacking frequency and the complex interplay between transportation choices and physical activity, providing a deeper understanding of the multifactorial drivers of obesity. While the model excels in specificity and offers practical utility for public health interventions, its moderate sensitivity and the exclusion of broader environmental and psychosocial variables limit its scope. Additionally, the reliance on synthetic data and a non-representative sample constrains direct real-world applicability. However, this study offers an opportunity to apply theoretical knowledge gained during the "Data Science in Business Analytics" course to a simulated scenario. By identifying patterns, correlations, and potential predictors of obesity, the research highlights the importance of data-driven approaches in addressing significant public health challenges.
 ---
 
 ```{r, message=FALSE, warning=FALSE}
@@ -54,3 +50,4 @@ source(here::here("src", "setup.R"))
 {{< include sections/_eda.qmd >}}
 {{< include sections/_analysis.qmd >}}
 {{< include sections/_conclusion.qmd >}}
+

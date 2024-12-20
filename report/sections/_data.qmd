@@ -232,7 +232,7 @@ The analysis confirms that all columns contain complete data, with no missing va
 
 **Check for duplicates**
 
-The dataset is examined for duplicated rows to ensure data integrity and eliminate redundancy. Identifying and addressing duplicates is a crucial step in data preprocessing, as redundant entries can skew analysis results and lead to misleading conclusions. This process involves systematically scanning the dataset for identical rows and quantifying their occurrence.
+The dataset is examined for duplicated rows to ensure data integrity and eliminate redundancy. Identifying and addressing duplicates is a crucial step in data preprocessing, as redundant entries can skew analysis results and lead to misleading conclusions. This process involves carefully reviewing the dataset for identical rows and quantifying their occurrence.
 
 ```{r}
 duplicated_rows <- sum(duplicated(dataset))
