@@ -10,7 +10,7 @@ author:
  - Illia Dorofieiev
 
 institute: University of Lausanne
-date: today
+date: "December 22, 2024"
 title-block-banner: "#0095C8" # chosen for the university of lausanne
 toc: true
 toc-location: right
