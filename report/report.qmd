@@ -1,5 +1,5 @@
 ---
-title: "Exploratory Analysis of Contributing Factors to Obesity in Mexico, Peru, and Venezuela"
+title: "Exploratory Analysis of Contributing Factors to Obesity in Mexico, Peru, and Colombia"
 subtitle: "Final Report – Group G | Data-Driven Insights from Behavioral, Dietary, and Lifestyle Patterns"
 
 author:
